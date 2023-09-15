@@ -1,0 +1,1 @@
+class Obstacels extends MovableObject{}
