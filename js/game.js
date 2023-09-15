@@ -1,13 +1,18 @@
 let canvas;
-let ctx;
-let character = new World();
+let world;
+
+
 
 function init() {
     canvas = document.getElementById('canvas')
-    let world = new World(canvas);
-    ctx = canvas.getContext('2d');
-    character.src = './images/1.Sharkie/1.IDLE/1.png'
-    console.log('My Char is: ', world)
+    world = new World(canvas);
+   
+    //character.src = './images/1.Sharkie/1.IDLE/1.png'
+    console.log('My Char is: ', world.hero.img.src);
+
     
-   //ctx.drawImage(character, 20, 200 ,200, 200);
+    console.log('My Char is: ', world.hero2);
+   
+   /* ctx.drawImage(world.opponents[1].images[1], 400, 0 ,200, 200);
+   ctx.drawImage(world.opponents[2].images[2], 400, 100 ,200, 200); */
 }

@@ -1,4 +1,4 @@
-class World{
+class World {
 
     hero = new Hero();
     opponents = [
@@ -7,5 +7,15 @@ class World{
         new Opponents()
     ];
 
-    draw(){}
+    ctx;
+
+    constructor(canvas) {
+        this.ctx = canvas.getContext('2d');
+        this.draw();
+    }
+
+    draw() { 
+        this.ctx.drawImage(this.hero.img, 20, 200 ,200, 200);
+        this.ctx.drawImage(this.opponents[0].img, 400, 200 ,200, 200);
+    }
 }
