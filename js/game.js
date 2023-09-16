@@ -13,5 +13,6 @@ function init() {
     
     console.log('My Char is: ', world.hero2);
    
-   /*  */
+   /* ctx.drawImage(world.opponents[1].images[1], 400, 0 ,200, 200);
+   ctx.drawImage(world.opponents[2].images[2], 400, 100 ,200, 200); */
 }
