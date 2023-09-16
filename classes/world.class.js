@@ -2,10 +2,11 @@ class World {
 
     hero = new Hero();
     opponents = [
-        new Opponents(),
-        new Opponents(),
-        new Opponents()
+        new Opponents(0),
+        new Opponents(1),
+        new Opponents(2)
     ];
+   
 
     ctx;
 
@@ -14,8 +15,10 @@ class World {
         this.draw();
     }
 
-    draw() { 
+    draw(){ 
         this.ctx.drawImage(this.hero.img, 20, 200 ,200, 200);
         this.ctx.drawImage(this.opponents[0].img, 400, 200 ,200, 200);
+        this.ctx.drawImage(this.opponents[1].img, 400, 0 ,200, 200);
+        this.ctx.drawImage(this.opponents[2].img, 400, 100 ,200, 200);
     }
 }
