@@ -1,1 +1,3 @@
-class Background extends MovableObject{}
+class Background extends MovableObject{
+    
+}

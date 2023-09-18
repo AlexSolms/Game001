@@ -2,6 +2,7 @@ class Boss extends Opponents {
     width = 300;
     height= 200;
 
+    constructor(){}
     bossIntroduce = [
         './images/2.Enemy/3 Final Enemy/1.Introduce/1.png',
         './images/2.Enemy/3 Final Enemy/1.Introduce/2.png',
