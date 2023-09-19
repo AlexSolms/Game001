@@ -1,5 +1,7 @@
 let canvas;
 let world;
+const CANVASWIDTH = 720;
+const CANVASHEIGHT = 400;
 
 
 
