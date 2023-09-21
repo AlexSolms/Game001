@@ -1,13 +1,4 @@
 class Opponents extends MovableObject{
-    
-  // hier muss ne Logik rein, die den Gegner zufällig auswählt  
-/* 
-    constructor(i){
-        super();
-        console.log(this.differentOp[i]);
-        super.loadImage(this.differentOp[i]);
-        
-    }  */
-    
-    chooseRamdomOpponent(){}
-}
+ x=600;
+ y=Math.floor(Math.random() * (390 - 10 + 1)) + 10;
+ }

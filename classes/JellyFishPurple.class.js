@@ -12,4 +12,13 @@ class JellyFishPurple extends JellyFish{
         './images/2.Enemy/2 Jelly fish/Dead/Lila/L3.png',
         './images/2.Enemy/2 Jelly fish/Dead/Lila/L4.png',
      ]
+     currentImage = 0;
+
+     constructor() {
+         super().loadImage(this.jellyPurpleMovement[0]);
+         super.loadImages(this.jellyPurpleMovement);
+         super.animate(this.jellyPurpleMovement);
+         console.log('JellyFishPurple ', this.y );
+
+     }
 }

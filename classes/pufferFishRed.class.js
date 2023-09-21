@@ -1,4 +1,4 @@
-class PufferFishRed extends Opponents {
+class PufferFishRed extends PufferFish{
 
     puffFishRedNormalMovement = [
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png',
@@ -28,4 +28,14 @@ class PufferFishRed extends Opponents {
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/3_2.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/3_3.png'
     ]
+    currentImage = 0;
+
+    constructor() {
+        //debugger;
+        super().loadImage(this.puffFishRedBubbleMovement[1]);
+        super.loadImages(this.puffFishRedBubbleMovement);
+        super.animate(this.puffFishRedBubbleMovement);
+        console.log('PuffRed ', this.y );
+    }
+
 }

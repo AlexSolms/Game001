@@ -1,6 +1,5 @@
-class PufferFishPink extends Opponents{
-    height = 80;
-    width = 80;
+class PufferFishPink extends PufferFish{
+    
     puffFishPinkNormalMovement = [
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
@@ -29,4 +28,13 @@ class PufferFishPink extends Opponents{
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2_2.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2_3.png'
     ]
+    currentImage = 0;
+
+    constructor() {
+        super().loadImage(this.puffFishPinkNormalMovement[1]);
+        super.loadImages(this.puffFishPinkNormalMovement);
+        super.animate(this.puffFishPinkNormalMovement);
+        console.log('PuffPink ', this.y );
+    }
+
 }

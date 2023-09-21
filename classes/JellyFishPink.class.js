@@ -12,5 +12,13 @@ class JellyFishPink extends JellyFish{
         './images/2.Enemy/2 Jelly fish/Dead/Pink/P3.png',
         './images/2.Enemy/2 Jelly fish/Dead/Pink/P4.png',
      ]
+     currentImage = 0;
 
+     constructor() {
+         super().loadImage(this.jellyPinkMovement[0]);
+         super.loadImages(this.jellyPinkMovement);
+         super.animate(this.jellyPinkMovement);
+         console.log('JellyPink ', this.y );
+     }
+ 
 }

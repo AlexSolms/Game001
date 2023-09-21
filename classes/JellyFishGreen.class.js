@@ -12,5 +12,13 @@ class JellyFishGreen extends JellyFish{
         './images/2.Enemy/2 Jelly fish/Dead/green/g3.png',
         './images/2.Enemy/2 Jelly fish/Dead/green/g4.png',
      ]
+     currentImage = 0;
+
+     constructor() {
+         super().loadImage(this.jellyGreenMovement[1]);
+         super.loadImages(this.jellyGreenMovement);
+         super.animate(this.jellyGreenMovement);
+         console.log('JellyGreen ', this.y );
+     }
 
 }

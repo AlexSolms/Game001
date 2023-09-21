@@ -11,6 +11,7 @@ class MovableObject {
         this.img.src = path;
     }
     /**
+     * this function loads all images to the image cache with purpose of use the animation of the object
      * 
      * @param {Array} imgArr - [img1png, img2.png....]
      */
@@ -22,6 +23,20 @@ class MovableObject {
         });
     }
 
+    /**
+     * This function changes the images (source image Cache) of the object with an intervall
+     * 
+     * @param {JSON} imgJson 
+     */
+    animate(imgJson){
+        setInterval(()=>{
+        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+        let path = imgJson[this.currentImage]; 
+        this.img = this.imageCache[path];
+        this.currentImage++;
+        },140);
+    }
+      
     moveRight() {
         console.log('Move right');
     }

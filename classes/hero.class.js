@@ -129,17 +129,8 @@ class Hero extends MovableObject {
 
     constructor() {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
-        super.loadImages(this.heroLongIdle);
-        this.animate(this.heroLongIdle);
+        super.loadImages(this.heroLongIdle); //located in movableObjects
+        super.animate(this.heroLongIdle); //located in movableObjects
     }
 
-
-    animate(imgJson){
-        setInterval(()=>{
-        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
-        let path = imgJson[this.currentImage]; 
-        this.img = this.imageCache[path];
-        this.currentImage++;
-        },140);
-    }
 }
