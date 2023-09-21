@@ -15,10 +15,21 @@ class JellyFishYellow extends JellyFish {
         './images/2.Enemy/2 Jelly fish/Dead/Yellow/y4.png'
     ]
 
-    constructor(){
-        
+    currentImage = 0;
+
+    constructor() {
         super().loadImage(this.jellyYellowMovement[2]);
-        console.log(this.jellyYellowMovement[0]);
+        super.loadImages(this.jellyYellowMovement);
+        this.animate(this.jellyYellowMovement);
     }
 
+
+    animate(imgJson){
+        setInterval(()=>{
+        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+        let path = imgJson[this.currentImage]; 
+        this.img = this.imageCache[path];
+        this.currentImage++;
+        },140);
+    }
 }

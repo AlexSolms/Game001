@@ -1,6 +1,6 @@
 class Opponents extends MovableObject{
     
-  
+  // hier muss ne Logik rein, die den Gegner zufällig auswählt  
 /* 
     constructor(i){
         super();

@@ -1,12 +1,12 @@
 class JellyFishGreen extends JellyFish{
     
-    JellyGreenMovement = [
+    jellyGreenMovement = [
         './images/2.Enemy/2 Jelly fish/Súper dangerous/Green 1.png',
         './images/2.Enemy/2 Jelly fish/Súper dangerous/Green 2.png',
         './images/2.Enemy/2 Jelly fish/Súper dangerous/Green 3.png',
         './images/2.Enemy/2 Jelly fish/Súper dangerous/Green 4.png'
      ]
-     JellyGreenDead = [
+     jellyGreenDead = [
         './images/2.Enemy/2 Jelly fish/Dead/green/g1.png',
         './images/2.Enemy/2 Jelly fish/Dead/green/g2.png',
         './images/2.Enemy/2 Jelly fish/Dead/green/g3.png',

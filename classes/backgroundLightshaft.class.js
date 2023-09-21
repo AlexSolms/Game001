@@ -4,7 +4,7 @@ class BackgroundLightshaft extends Background{
         './images/3. Background/Light/2.png',
         './images/3. Background/Light/full.png'
     ]
-    constructor(){
-        super().loadImage(this.imgBackgroundLightshaft[0]);
+    constructor(i){
+        super().loadImage(this.imgBackgroundLightshaft[i]);
     }
 }

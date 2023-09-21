@@ -6,8 +6,8 @@ class BackgroundOcean extends Background {
         './images/3. Background/Layers/5. Water/D2.png',
         './images/3. Background/Layers/5. Water/D.png'
     ]
-    constructor() {
+    constructor(i) {
 
-        super().loadImage(this.imgBackgroundOcean[0]);
+        super().loadImage(this.imgBackgroundOcean[i]);
     }
 }
