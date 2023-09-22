@@ -3,6 +3,7 @@ class Hero extends MovableObject {
     height = 300;
     y = 80;
     x = -50;
+    world;
     heroIdle = [
         './images/1.Sharkie/1.IDLE/1.png',
         './images/1.Sharkie/1.IDLE/2.png',
@@ -130,7 +131,8 @@ class Hero extends MovableObject {
     constructor() {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
         super.loadImages(this.heroLongIdle); //located in movableObjects
-        super.animate(this.heroLongIdle); //located in movableObjects
+        
+        super.animate(this.heroSwim); //located in movableObjects
     }
 
 }
