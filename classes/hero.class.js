@@ -132,7 +132,14 @@ class Hero extends MovableObject {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
         super.loadImages(this.heroLongIdle); //located in movableObjects
         
-        super.animate(this.heroSwim); //located in movableObjects
+        super.animate(this.heroLongIdle); //located in movableObjects
+        //this.moveHero();
     }
 
+    /* moveHero(){
+        if (this.world.keyboard.right === true) { this.x = this.x++};
+        if (this.world.keyboard.left === true) { this.x = this.x--};
+        if (this.world.keyboard.up === true) { this.x = this.y++};
+        if (this.world.keyboard.down === true) { this.x = this.x--};
+    } */
 }
