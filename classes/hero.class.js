@@ -131,8 +131,9 @@ class Hero extends MovableObject {
     constructor() {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
         super.loadImages(this.heroLongIdle); //located in movableObjects
+        //console.log(this.world);
+        this.animateHero(this.heroLongIdle); //located in movableObjects
         
-        super.animate(this.heroLongIdle); //located in movableObjects
         //this.moveHero();
     }
 
@@ -142,4 +143,22 @@ class Hero extends MovableObject {
         if (this.world.keyboard.up === true) { this.x = this.y++};
         if (this.world.keyboard.down === true) { this.x = this.x--};
     } */
+
+        /**
+     * This function changes the images (source image Cache) of the object with an intervall
+     * 
+     * @param {JSON} imgJson 
+     */
+        animateHero(imgJson){
+            console.log(this.world);
+             if(keyboard.right){
+            setInterval(()=>{
+            this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+            let path = imgJson[this.currentImage]; 
+            this.img = this.imageCache[path];
+            this.currentImage++;
+            },140);
+         }
+        }
+          
 }

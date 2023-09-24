@@ -20,8 +20,8 @@ window.addEventListener("keydown", (e) =>{
  (e.code == "ArrowLeft" ||  e.code === "KeyA") ? keyboard.left = true : '';
  (e.code == "ArrowRight" ||  e.code === "KeyR") ? keyboard.right = true : '';
  e.code == "Space"? keyboard.space = true : '';
- console.log(e.code);
- console.log(keyboard);
+//  console.log(e.code);
+//  console.log(keyboard);
 });
 window.addEventListener("keyup", (e) =>{
     (e.code === "ArrowUp" ||  e.code === "KeyW") ? keyboard.up = false : '';
@@ -29,8 +29,8 @@ window.addEventListener("keyup", (e) =>{
     (e.code == "ArrowLeft" ||  e.code === "KeyA") ? keyboard.left = false : '';
     (e.code == "ArrowRight" ||  e.code === "KeyR")? keyboard.right = false : '';
     e.code == "Space"? keyboard.space = false : '';
-    console.log(e.code);
- console.log(keyboard);
+   //  console.log(e.code);
+//  console.log(keyboard);
    });
 
 /* window.onkeydown = (ev) => {
