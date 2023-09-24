@@ -54,7 +54,17 @@ class World {
 
 
     drawImg(objektToDraw) {
+        if(objektToDraw.otherDirection){
+            this.ctx.save();  // saves the original object
+            this.ctx.translate(objektToDraw.width, 0); // moves the object with objectwidth to avoid image jump
+            this.ctx.scale(-1,1); // flips the image
+            objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
+        }
         this.ctx.drawImage(objektToDraw.img, objektToDraw.x, objektToDraw.y, objektToDraw.width, objektToDraw.height);
+        if(objektToDraw.otherDirection){ 
+            objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate
+            this.ctx.restore() // restores the objekt 
+        }
     }
 }
 

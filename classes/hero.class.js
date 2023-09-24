@@ -3,7 +3,9 @@ class Hero extends MovableObject {
     height = 300;
     y = 80;
     x = -50;
+    
     world;
+
     heroIdle = [
         './images/1.Sharkie/1.IDLE/1.png',
         './images/1.Sharkie/1.IDLE/2.png',
@@ -101,7 +103,7 @@ class Hero extends MovableObject {
     }
 
     heroDead = {
-        poisened:[
+        poisened: [
             './images/1.Sharkie/6.dead/1.Poisoned/1.png',
             './images/1.Sharkie/6.dead/1.Poisoned/2.png',
             './images/1.Sharkie/6.dead/1.Poisoned/3.png',
@@ -115,7 +117,7 @@ class Hero extends MovableObject {
             './images/1.Sharkie/6.dead/1.Poisoned/11.png',
             './images/1.Sharkie/6.dead/1.Poisoned/12.png'
         ],
-        shocked:[
+        shocked: [
             './images/1.Sharkie/6.dead/2.Electro_shock/3.png',
             './images/1.Sharkie/6.dead/2.Electro_shock/2.png',
             './images/1.Sharkie/6.dead/2.Electro_shock/4.png',
@@ -130,35 +132,34 @@ class Hero extends MovableObject {
 
     constructor() {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
-        super.loadImages(this.heroLongIdle); //located in movableObjects
-        //console.log(this.world);
-        this.animateHero(this.heroLongIdle); //located in movableObjects
-        
-        //this.moveHero();
+        super.loadImages(this.heroSwim); //located in movableObjects
+        this.animateHero(this.heroSwim); //located here but move() is located in movableObjects
     }
 
-    /* moveHero(){
-        if (this.world.keyboard.right === true) { this.x = this.x++};
-        if (this.world.keyboard.left === true) { this.x = this.x--};
-        if (this.world.keyboard.up === true) { this.x = this.y++};
-        if (this.world.keyboard.down === true) { this.x = this.x--};
-    } */
 
-        /**
-     * This function changes the images (source image Cache) of the object with an intervall
-     * 
-     * @param {JSON} imgJson 
-     */
-        animateHero(imgJson){
-            console.log(this.world);
-             if(keyboard.right){
-            setInterval(()=>{
-            this.currentImage === imgJson.length ? this.currentImage = 0 : '';
-            let path = imgJson[this.currentImage]; 
-            this.img = this.imageCache[path];
-            this.currentImage++;
-            },140);
-         }
-        }
-          
+    /**  This function changes the images (source image Cache) of the object with an intervall
+    * 
+    * @param {JSON} imgJson - contains 
+    */
+    animateHero(imgJson) {
+        setInterval(() => {
+            this.move(this.world.keyboard.right, 'x', 30);
+            this.move(this.world.keyboard.left, 'x', -30);
+            this.move(this.world.keyboard.up, 'y', -30);
+            this.move(this.world.keyboard.down, 'y', 30);
+        }, 100 / 6);
+
+        setInterval(() => {
+            if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) this.swimAnimation(imgJson); 
+        }, 140);
+    }
+
+    swimAnimation(imgJson) {
+        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+        let path = imgJson[this.currentImage];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
+
 }

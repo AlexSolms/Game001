@@ -4,6 +4,8 @@ class MovableObject {
     img;
     height;
     width;
+    speed = 0.15;
+    otherDirection = false;
     imageCache = {};
 
     loadImage(path) {
@@ -37,17 +39,20 @@ class MovableObject {
         },140);
     }
       
-    moveRight() {
-        console.log('Move right');
-    }
-    moveLeft() {
-
-    }
-    moveUp() {
-
-    }
-    moveDown() {
-
-    }
+        /**
+     * This funktion moves the hero depending on the given parameter
+     * 
+     * @param {string} direction - direction
+     * @param {string} axis - if up/ down or left/right
+     * @param {number} multiplier - provides the move direction
+    */
+        move(direction, axis, multiplier) {
+            if (this.world.keyboard.left) {
+                this.otherDirection = true;
+            } else {
+                this.otherDirection = false;
+            }
+            direction ? this[axis] += this.speed * multiplier : '';
+        }
 
 }
