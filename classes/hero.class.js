@@ -147,6 +147,7 @@ class Hero extends MovableObject {
             this.move(this.world.keyboard.left, 'x', -30);
             this.move(this.world.keyboard.up, 'y', -30);
             this.move(this.world.keyboard.down, 'y', 30);
+            this.world.camera_x = -this.x - 50;
         }, 100 / 6);
 
         setInterval(() => {

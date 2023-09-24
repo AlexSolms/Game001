@@ -17,6 +17,7 @@ class World {
     canvas;
     ctx;
     keyboard;
+    camera_x = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -27,15 +28,16 @@ class World {
         //console.log(this.keyboard);
     }
 
-    setWorld(){
+    setWorld() {
         this.hero.world = this;
-    
+
     }
     draw() {
-           
-            
+
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // clears canvas
 
+        this.ctx.translate(this.camera_x, 0);
         this.oceanBackground.forEach(element => {
             this.drawImg(element);
         });
@@ -44,7 +46,7 @@ class World {
         });
 
         this.drawImg(this.hero);
-
+        this.ctx.translate(-this.camera_x, 0);
 
         let self = this;  // Alternative zu this.draw.bind(this);
         requestAnimationFrame(function () { // requestAnimationFrame calls function draw() in sync with the refresh rate of the browser. 
@@ -54,14 +56,14 @@ class World {
 
 
     drawImg(objektToDraw) {
-        if(objektToDraw.otherDirection){
+        if (objektToDraw.otherDirection) {
             this.ctx.save();  // saves the original object
             this.ctx.translate(objektToDraw.width, 0); // moves the object with objectwidth to avoid image jump
-            this.ctx.scale(-1,1); // flips the image
+            this.ctx.scale(-1, 1); // flips the image
             objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
         }
         this.ctx.drawImage(objektToDraw.img, objektToDraw.x, objektToDraw.y, objektToDraw.width, objektToDraw.height);
-        if(objektToDraw.otherDirection){ 
+        if (objektToDraw.otherDirection) {
             objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate
             this.ctx.restore() // restores the objekt 
         }
