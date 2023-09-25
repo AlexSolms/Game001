@@ -11,6 +11,7 @@ const level1 = new Level([
     new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
     new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
     new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)]()
+    
 ],
     [
         new Background(this.BACKGROUNDLAYER.bgWater, 0, 0, 400),

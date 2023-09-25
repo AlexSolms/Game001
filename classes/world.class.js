@@ -2,6 +2,7 @@ class World {
     level = level1;
   
     hero = new Hero();
+    boss = new Boss();
     canvas;
     ctx;
     keyboard;
@@ -26,6 +27,7 @@ class World {
         this.drawMultObj(this.level.oceanBackground);
         this.drawMultObj(this.level.activeOpponent);
         this.drawImg(this.hero);
+        this.drawImg(this.boss);
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;  // Alternative zu this.draw.bind(this);
@@ -47,6 +49,8 @@ class World {
             this.ctx.scale(-1, 1); // flips the image
             objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
         }
+       
+        //debugger;
         this.ctx.drawImage(objektToDraw.img, objektToDraw.x, objektToDraw.y, objektToDraw.width, objektToDraw.height);
         if (objektToDraw.otherDirection) {
             objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate

@@ -28,7 +28,7 @@ class PufferFishGreen extends PufferFish{
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1_2.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1_3.png'
     ]
-    currentImage = 0;
+    //currentImage = 0;
 
      constructor() {
          super().loadImage(this.puffFishGreenNormalMovement[1]);

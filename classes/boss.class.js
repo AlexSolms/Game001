@@ -1,8 +1,10 @@
 class Boss extends Opponents {
     width = 300;
-    height= 200;
+    height= 400;
+    y = 0;
+    x;
 
-    constructor(){}
+  
     bossIntroduce = [
         './images/2.Enemy/3 Final Enemy/1.Introduce/1.png',
         './images/2.Enemy/3 Final Enemy/1.Introduce/2.png',
@@ -57,5 +59,11 @@ class Boss extends Opponents {
         './images/2.Enemy/3 Final Enemy/Hurt/3.png',
         './images/2.Enemy/3 Final Enemy/Hurt/4.png',
     ]
+    constructor(){
+        super().loadImage('./images/2.Enemy/3 Final Enemy/1.Introduce/10.png');
+        super.loadImages(this.bossIntroduce); //located in movableObjects
+        this.x = 2300;
+        super.animate(this.bossIntroduce);
+    }
 
 }

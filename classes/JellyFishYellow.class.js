@@ -15,7 +15,7 @@ class JellyFishYellow extends JellyFish {
         './images/2.Enemy/2 Jelly fish/Dead/Yellow/y4.png'
     ]
 
-    currentImage = 0;
+    //currentImage = 0;
 
     constructor() {
         super().loadImage(this.jellyYellowMovement[2]);

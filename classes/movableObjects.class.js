@@ -7,6 +7,7 @@ class MovableObject {
     speed = 0.15;
     otherDirection = false;
     imageCache = {};
+    currentImage = 0;
 
     loadImage(path) {
         this.img = new Image();
@@ -31,9 +32,11 @@ class MovableObject {
      * @param {JSON} imgJson 
      */
     animate(imgJson) {
+        
         setInterval(() => {
             this.currentImage === imgJson.length ? this.currentImage = 0 : '';
             let path = imgJson[this.currentImage];
+           
             this.img = this.imageCache[path];
             this.currentImage++;
         }, 140);
