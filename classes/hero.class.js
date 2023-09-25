@@ -1,8 +1,8 @@
 class Hero extends MovableObject {
     width = 300;
-    height = 300;
+    height = 250;
     y = 80;
-    x = -50;
+    x = 0;
     
     world;
 
@@ -143,11 +143,14 @@ class Hero extends MovableObject {
     */
     animateHero(imgJson) {
         setInterval(() => {
+            
             this.move(this.world.keyboard.right, 'x', 30);
             this.move(this.world.keyboard.left, 'x', -30);
             this.move(this.world.keyboard.up, 'y', -30);
-            this.move(this.world.keyboard.down, 'y', 30);
-            this.world.camera_x = -this.x - 50;
+            this.move(this.world.keyboard.down, 'y', 30);  
+            
+            
+            this.world.camera_x = -this.x;
         }, 100 / 6);
 
         setInterval(() => {
@@ -160,6 +163,7 @@ class Hero extends MovableObject {
         let path = imgJson[this.currentImage];
         this.img = this.imageCache[path];
         this.currentImage++;
+        
     }
 
 

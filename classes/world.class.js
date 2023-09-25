@@ -1,19 +1,7 @@
 class World {
-    OPPONENTS = [JellyFishGreen, JellyFishYellow, JellyFishPink, JellyFishPurple, PufferFishGreen, PufferFishPink, PufferFishRed];
+    level = level1;
+  
     hero = new Hero();
-
-    activeOpponent = [
-        new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
-        new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
-        new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)]()
-    ]; //fügt einen random opponent ein  
-    oceanBackground = [
-        new BackgroundOcean(2),
-        new BackgroundLayer2(2),
-        new BackgroundLayer1(2),
-        new BackgroundBottom(2),
-    ]
-
     canvas;
     ctx;
     keyboard;
@@ -30,21 +18,13 @@ class World {
 
     setWorld() {
         this.hero.world = this;
-
     }
+
     draw() {
-
-
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // clears canvas
-
         this.ctx.translate(this.camera_x, 0);
-        this.oceanBackground.forEach(element => {
-            this.drawImg(element);
-        });
-        this.activeOpponent.forEach(opponent => {
-            this.drawImg(opponent);
-        });
-
+        this.drawMultObj(this.level.oceanBackground);
+        this.drawMultObj(this.level.activeOpponent);
         this.drawImg(this.hero);
         this.ctx.translate(-this.camera_x, 0);
 
@@ -54,6 +34,11 @@ class World {
         });
     }
 
+    drawMultObj(objectsToDraw) {
+        objectsToDraw.forEach(o => {
+            this.drawImg(o);
+        });
+    }
 
     drawImg(objektToDraw) {
         if (objektToDraw.otherDirection) {
