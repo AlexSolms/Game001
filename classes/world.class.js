@@ -7,6 +7,7 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    introDone = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -27,7 +28,14 @@ class World {
         this.drawMultObj(this.level.oceanBackground);
         this.drawMultObj(this.level.activeOpponent);
         this.drawImg(this.hero);
-        this.drawImg(this.boss);
+        console.log(this.introDone);
+        if (this.hero.x >= 1917 && !this.introDone) {
+            this.drawImg(this.boss);
+            this.introDone=true;
+        }  else if (this.hero.x >= 1917 ) {
+            this.drawImg(this.boss);   
+        }
+        
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;  // Alternative zu this.draw.bind(this);
