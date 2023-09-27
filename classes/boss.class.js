@@ -1,10 +1,12 @@
 class Boss extends Opponents {
+    world2;
     width = 300;
-    height= 400;
+    height = 400;
     y = 0;
-    x = 2300;
+    x = 1300;
+    bossIntroDone = false;
+    currentImage = 0;
 
-  
     bossIntroduce = [
         './images/2.Enemy/3 Final Enemy/1.Introduce/1.png',
         './images/2.Enemy/3 Final Enemy/1.Introduce/2.png',
@@ -59,19 +61,56 @@ class Boss extends Opponents {
         './images/2.Enemy/3 Final Enemy/Hurt/3.png',
         './images/2.Enemy/3 Final Enemy/Hurt/4.png',
     ]
-    constructor(){
-        super();
-        
-       
-          /*   super.loadImages(this.bossIntroduce); //located in movableObjects
-            
-            super.animate(this.bossIntroduce);
-             */
-       
+    constructor() {
+
+        super().loadImage('./images/2.Enemy/3 Final Enemy/1.Introduce/1.png');
+        super.loadImages(this.bossIntroduce); //located in movableObjects
         super.loadImages(this.bossFloating); //located in movableObjects
-        
-        super.animate(this.bossFloating);
-    
+        super.loadImages(this.bossAttack); //located in movableObjects
+        super.loadImages(this.bossDead); //located in movableObjects
+        super.loadImages(this.bossHurt); //located in movableObjects
+        //super.animate(this.bossIntroduce);
+         this.animateBoss();
+
     }
+
+    animateBoss() {
+        let imgCount = 0;
+
+        setInterval(() => {
+            // console.log(this.world2.hero);
+            //debugger;
+            if (this.world2.hero.x > 1100) { // && !this.bossIntroDone
+                //debugger;
+                if (imgCount < 10) { //!this.bossIntroDone &&  //&& this.world2.hero.x > 1916 
+                    this.swimAnimate(this.bossIntroduce); //located in movableObjects
+                    imgCount++; //Intro should be played one time
+                    //if (imgCount === 10) { this.bossIntroDone = true; }
+                }
+            }
+        }, 140);
+        setInterval(() => {
+            if (imgCount === 10) {
+                this.swimAnimate(this.bossFloating);
+            }
+
+        }, 140);
+    }
+        /**
+     * This function changes the images (source image Cache) of the object with an intervall
+     * 
+     * @param {JSON} imgJson 
+     */
+        swimAnimate(imgJson) {
+        
+           
+                this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+                let path = imgJson[this.currentImage];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+           
+        }
+
+
 
 }

@@ -20,6 +20,7 @@ class World {
 
     setWorld() {
         this.hero.world = this;
+        this.boss.world2 = this;
     }
 
     draw() {
@@ -28,13 +29,15 @@ class World {
         this.drawMultObj(this.level.oceanBackground);
         this.drawMultObj(this.level.activeOpponent);
         this.drawImg(this.hero);
-        console.log(this.introDone);
-        if (this.hero.x >= 1917 && !this.introDone) {
+        //console.log(this.introDone);
+        //  if (this.hero.x >= 1917 && !this.introDone) {
+            // console.log('jump into draw boss intro');
             this.drawImg(this.boss);
-            this.introDone=true;
-        }  else if (this.hero.x >= 1917 ) {
-            this.drawImg(this.boss);   
-        }
+            //  this.introDone=true;
+        //  }  else if (this.hero.x >= 1800 && this.introDone ) { //if (this.hero.x >= 1917 )
+            // console.log('jump into draw boss');
+            // this.drawImg(this.boss);   
+        // } 
         
         this.ctx.translate(-this.camera_x, 0);
 
@@ -57,8 +60,9 @@ class World {
             this.ctx.scale(-1, 1); // flips the image
             objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
         }
-       
         //debugger;
+        //if(objektToDraw instanceof Boss) debugger;
+        
         this.ctx.drawImage(objektToDraw.img, objektToDraw.x, objektToDraw.y, objektToDraw.width, objektToDraw.height);
         if (objektToDraw.otherDirection) {
             objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate

@@ -36,7 +36,6 @@ class MovableObject {
         setInterval(() => {
             this.currentImage === imgJson.length ? this.currentImage = 0 : '';
             let path = imgJson[this.currentImage];
-           
             this.img = this.imageCache[path];
             this.currentImage++;
         }, 140);
