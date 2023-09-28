@@ -4,9 +4,8 @@ class Hero extends MovableObject {
     y = 80;
     x = 0;
     longIdle = false;
-
     idleTime = new Date().getTime();
-
+    imgIdleCount = 0
     world;
 
     heroIdle = [
@@ -30,7 +29,7 @@ class Hero extends MovableObject {
         './images/1.Sharkie/1.IDLE/18.png'
     ]
 
-    heroLongIdle = [
+    heroLongIdle1 = [
         './images/1.Sharkie/2.Long_IDLE/i1.png',
         './images/1.Sharkie/2.Long_IDLE/i2.png',
         './images/1.Sharkie/2.Long_IDLE/i3.png',
@@ -39,13 +38,23 @@ class Hero extends MovableObject {
         './images/1.Sharkie/2.Long_IDLE/i6.png',
         './images/1.Sharkie/2.Long_IDLE/i7.png',
         './images/1.Sharkie/2.Long_IDLE/i8.png',
-        './images/1.Sharkie/2.Long_IDLE/i9.png',
+        './images/1.Sharkie/2.Long_IDLE/i9.png'
+    ]
+    heroLongIdle2 = [
         './images/1.Sharkie/2.Long_IDLE/i10.png',
         './images/1.Sharkie/2.Long_IDLE/i11.png',
         './images/1.Sharkie/2.Long_IDLE/i12.png',
         './images/1.Sharkie/2.Long_IDLE/i13.png',
-        './images/1.Sharkie/2.Long_IDLE/i14.png'
+        './images/1.Sharkie/2.Long_IDLE/i14.png',
+        './images/1.Sharkie/2.Long_IDLE/i10.png',
+        './images/1.Sharkie/2.Long_IDLE/i10.png',
+        './images/1.Sharkie/2.Long_IDLE/i10.png',
+        './images/1.Sharkie/2.Long_IDLE/i10.png',
+        './images/1.Sharkie/2.Long_IDLE/i10.png',
+        './images/1.Sharkie/2.Long_IDLE/i10.png',
+        './images/1.Sharkie/2.Long_IDLE/i10.png'
     ]
+
 
     heroSwim = [
         './images/1.Sharkie/3.Swim/1.png',
@@ -96,12 +105,12 @@ class Hero extends MovableObject {
             './images/1.Sharkie/5.Hurt/1.Poisoned/4.png'
         ],
         shocked: [
-            './images/1.Sharkie/5.Hurt/2.Electric shock/.o1.png',
-            './images/1.Sharkie/5.Hurt/2.Electric shock/.o2.png',
-            './images/1.Sharkie/5.Hurt/2.Electric shock/.o1.png',
-            './images/1.Sharkie/5.Hurt/2.Electric shock/.o2.png',
-            './images/1.Sharkie/5.Hurt/2.Electric shock/.o1.png',
-            './images/1.Sharkie/5.Hurt/2.Electric shock/.o2.png'
+            './images/1.Sharkie/5.Hurt/2.Electric shock/o1.png',
+            './images/1.Sharkie/5.Hurt/2.Electric shock/o2.png',
+            './images/1.Sharkie/5.Hurt/2.Electric shock/o1.png',
+            './images/1.Sharkie/5.Hurt/2.Electric shock/o2.png',
+            './images/1.Sharkie/5.Hurt/2.Electric shock/o1.png',
+            './images/1.Sharkie/5.Hurt/2.Electric shock/o2.png'
         ]
     }
 
@@ -137,10 +146,15 @@ class Hero extends MovableObject {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
         super.loadImages(this.heroSwim); //located in movableObjects
         super.loadImages(this.heroIdle); //located in movableObjects
-        /*    super.loadImages(this.heroLongIdle); //located in movableObjects
-            super.loadImages(this.heroAttack); //located in movableObjects
-            super.loadImages(this.heroHurt); //located in movableObjects
-            super.loadImages(this.heroDead); //located in movableObjects */
+        super.loadImages(this.heroLongIdle1); //located in movableObjects
+        super.loadImages(this.heroLongIdle2); //located in movableObjects
+        super.loadImages(this.heroAttack.bubbleTrapWhale); //located in movableObjects
+        super.loadImages(this.heroAttack.bubbleTrapNormal); //located in movableObjects
+        super.loadImages(this.heroAttack.finSlap); //located in movableObjects
+        super.loadImages(this.heroHurt.poisened); //located in movableObjects
+        super.loadImages(this.heroHurt.shocked); //located in movableObjects
+        super.loadImages(this.heroDead.poisened); //located in movableObjects 
+        super.loadImages(this.heroDead.shocked); //located in movableObjects 
         this.animateHero(); //located here but move() is located in movableObjects
     }
 
@@ -150,35 +164,27 @@ class Hero extends MovableObject {
     */
     animateHero() {
         setInterval(() => {
-
             this.move(this.world.keyboard.right, 'x', 30);
             this.move(this.world.keyboard.left, 'x', -30);
             this.move(this.world.keyboard.up, 'y', -30);
             this.move(this.world.keyboard.down, 'y', 30);
-
             this.world.camera_x = -this.x;
-
         }, 100 / 6);
+        setInterval(() => {this.normalSwimAndIdleAnimation()}, 140);
+    }
 
-        // swim animation normal swim
-        setInterval(() => {
-            //if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) {
-            //console.log('keboard.press: ', this.world.keyboard.press)
-            if (this.world.keyboard.press) {
-                super.swimAnimation(this.heroSwim, 1);
-            }  /* else {
-                super.swimAnimation(this.heroIdle);
-            }  */
-        }, 140);
-
-
-        
-         setInterval(() => {
-            if (!this.world.keyboard.press) {
-                //console.log(this.world.keyboard.press);
-                super.swimAnimation(this.heroIdle);
-            };
-        }, 140); 
+    normalSwimAndIdleAnimation(){
+        if (this.world.keyboard.press) {
+            super.swimAnimation(this.heroSwim, 1);
+            this.idleTime = new Date().getTime();
+            this.imgIdleCount = 0;
+        }
+        (!this.world.keyboard.press && this.imgIdleCount == 0) ? super.swimAnimation(this.heroIdle) : '';           
+        if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000 && this.imgIdleCount < 10) {
+            super.swimAnimation(this.heroLongIdle1);
+            this.imgIdleCount++;
+        }
+        (this.imgIdleCount == 10) ? super.swimAnimation(this.heroLongIdle2) : '';
     }
 
     /**
