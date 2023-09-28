@@ -18,7 +18,7 @@ window.addEventListener("keydown", (e) => {
    (e.code == "ArrowLeft" || e.code === "KeyA") ? keyboard.left = true : '';
    (e.code == "ArrowRight" || e.code === "KeyD") ? keyboard.right = true : '';
    e.code == "Space" ? keyboard.space = true : '';
-   keyboard.press = true;
+   (keyboard.up||keyboard.down||keyboard.left||keyboard.right) ? keyboard.press = true : keyboard.press = false;
 });
 
 window.addEventListener("keyup", (e) => {

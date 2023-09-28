@@ -149,6 +149,19 @@ class Hero extends MovableObject {
     * This function changes the images (source image Cache) of the object with an intervall
     */
     animateHero() {
+  
+
+        // swim animation normal swim
+        setInterval(() => {
+            //if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) {
+            console.log('keboard.press: ',this.world.keyboard.press)
+            if(this.world.keyboard.press){
+            this.action = 'swim';
+                super.swimAnimation(this.heroSwim);
+            }else{
+                super.swimAnimation(this.heroIdle);
+            }
+        }, 140);
         setInterval(() => {
 
             this.move(this.world.keyboard.right, 'x', 30);
@@ -159,18 +172,6 @@ class Hero extends MovableObject {
             this.world.camera_x = -this.x;
 
         }, 100 / 6);
-
-        // swim animation normal swim
-        setInterval(() => {
-            //if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) {
-             console.log('keboard.press: ',this.world.keyboard.press)
-            if(this.world.keyboard.press){
-            this.action = 'swim';
-                super.swimAnimation(this.heroSwim);
-            }else{
-                super.swimAnimation(this.heroIdle);
-            }
-        }, 140);
         /* setInterval(() => {
             if (this.longIdle) {
                 console.log(this.longIdle);
