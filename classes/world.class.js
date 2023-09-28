@@ -47,6 +47,7 @@ class World {
     }
 
     drawImg(objektToDraw) {
+        if(this instanceof Hero){debugger;}
         if (objektToDraw.otherDirection) {
             this.ctx.save();  // saves the original object
             this.ctx.translate(objektToDraw.width, 0); // moves the object with objectwidth to avoid image jump

@@ -15,7 +15,7 @@ class MovableObject {
      * @param {string} path - path of image
      */
     loadImage(path) {
-        console.log('Pfad: ',path);
+       //console.log('Pfad: ',path);
         this.img = new Image();
         this.img.src = path;
     }
@@ -27,7 +27,7 @@ class MovableObject {
      * @param {Array} imgArr - [img1png, img2.png....]
      */
     loadImages(imgArr) {
-        console.log('Array: ',imgArr);
+        //console.log('Array: ',imgArr);
         imgArr.forEach((path) => {
             let img = new Image();
             img.src = path;
@@ -40,12 +40,17 @@ class MovableObject {
      * 
      * @param {JSON} imgJson 
      */
-    swimAnimation(imgJson) {
-        if (imgJson instanceof Hero) {
-           console.log(imgJson); 
+    swimAnimation(imgJson, test) {
+        if (this instanceof Hero) {
+           //console.log(imgJson);
+           if (test == 1) {
+           // console.log(imgJson);
+            //debugger;
+           } 
         }
-        
-        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+        //Ich habe hier einen Fehler, der erzeuget wird wenn ich eine neue animation laden will
+        // läuft die alte Animation noch
+        this.currentImage >= imgJson.length ? this.currentImage = 0 : '';
         let path = imgJson[this.currentImage];
         this.img = this.imageCache[path];
         //console.log('loaded img: '.this.img);

@@ -4,7 +4,7 @@ class Hero extends MovableObject {
     y = 80;
     x = 0;
     longIdle = false;
-    action = 'idle';
+
     idleTime = new Date().getTime();
 
     world;
@@ -131,7 +131,7 @@ class Hero extends MovableObject {
         ]
 
     }
-    currentImage = 0;
+    //currentImage = 0;
 
     constructor() {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
@@ -149,19 +149,6 @@ class Hero extends MovableObject {
     * This function changes the images (source image Cache) of the object with an intervall
     */
     animateHero() {
-  
-
-        // swim animation normal swim
-        setInterval(() => {
-            //if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) {
-            console.log('keboard.press: ',this.world.keyboard.press)
-            if(this.world.keyboard.press){
-            this.action = 'swim';
-                super.swimAnimation(this.heroSwim);
-            }else{
-                super.swimAnimation(this.heroIdle);
-            }
-        }, 140);
         setInterval(() => {
 
             this.move(this.world.keyboard.right, 'x', 30);
@@ -172,12 +159,26 @@ class Hero extends MovableObject {
             this.world.camera_x = -this.x;
 
         }, 100 / 6);
-        /* setInterval(() => {
-            if (this.longIdle) {
-                console.log(this.longIdle);
+
+        // swim animation normal swim
+        setInterval(() => {
+            //if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) {
+            //console.log('keboard.press: ', this.world.keyboard.press)
+            if (this.world.keyboard.press) {
+                super.swimAnimation(this.heroSwim, 1);
+            }  /* else {
+                super.swimAnimation(this.heroIdle);
+            }  */
+        }, 140);
+
+
+        
+         setInterval(() => {
+            if (!this.world.keyboard.press) {
+                //console.log(this.world.keyboard.press);
                 super.swimAnimation(this.heroIdle);
             };
-        }, 140); */
+        }, 140); 
     }
 
     /**
@@ -189,8 +190,8 @@ class Hero extends MovableObject {
     */
     move(direction, axis, multiplier) {
         if (this.world.keyboard.left) {
-            this.otherDirection = true; 
-        } else if (this.world.keyboard.right){ //this if keeps the direction as long as right was not pushed
+            this.otherDirection = true;
+        } else if (this.world.keyboard.right) { //this if keeps the direction as long as right was not pushed
             this.otherDirection = false;
         }
         // both if are necessary for keeping the hero within the canvas
