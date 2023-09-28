@@ -1,6 +1,6 @@
 class World {
     level = level1;
-  
+
     hero = new Hero();
     boss = new Boss();
     canvas;
@@ -19,26 +19,19 @@ class World {
     }
 
     setWorld() {
-        this.hero.world = this;
+        this.hero.world = this; // muss testen ob ich hier nicht einfach this.world statt this.hero.world schreiben kann
         this.boss.world2 = this;
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // clears canvas
         this.ctx.translate(this.camera_x, 0);
+
         this.drawMultObj(this.level.oceanBackground);
         this.drawMultObj(this.level.activeOpponent);
         this.drawImg(this.hero);
-        //console.log(this.introDone);
-        //  if (this.hero.x >= 1917 && !this.introDone) {
-            // console.log('jump into draw boss intro');
-            this.drawImg(this.boss);
-            //  this.introDone=true;
-        //  }  else if (this.hero.x >= 1800 && this.introDone ) { //if (this.hero.x >= 1917 )
-            // console.log('jump into draw boss');
-            // this.drawImg(this.boss);   
-        // } 
-        
+        this.drawImg(this.boss);
+
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;  // Alternative zu this.draw.bind(this);
@@ -60,10 +53,12 @@ class World {
             this.ctx.scale(-1, 1); // flips the image
             objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
         }
-        //debugger;
-        //if(objektToDraw instanceof Boss) debugger;
-        
-        this.ctx.drawImage(objektToDraw.img, objektToDraw.x, objektToDraw.y, objektToDraw.width, objektToDraw.height);
+        try {
+            this.ctx.drawImage(objektToDraw.img, objektToDraw.x, objektToDraw.y, objektToDraw.width, objektToDraw.height);
+        }catch(e){
+            console.warn('Error loading image ', e);
+            console.warn('Could not load image ', this.img.scr);
+        }
         if (objektToDraw.otherDirection) {
             objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate
             this.ctx.restore() // restores the objekt 

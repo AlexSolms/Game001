@@ -9,10 +9,17 @@ class MovableObject {
     imageCache = {};
     currentImage = 0;
 
+    /**
+     * This function loads an image provided by path as soucre attribute to img of object
+     * 
+     * @param {string} path - path of image
+     */
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
     }
+
+
     /**
      * this function loads all images to the image cache with purpose of use the animation of the object
      * 
@@ -31,34 +38,13 @@ class MovableObject {
      * 
      * @param {JSON} imgJson 
      */
-    animate(imgJson) {
-        
-        setInterval(() => {
-            this.currentImage === imgJson.length ? this.currentImage = 0 : '';
-            let path = imgJson[this.currentImage];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 140);
+    swimAnimation(imgJson) {
+        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+        let path = imgJson[this.currentImage];
+        this.img = this.imageCache[path];
+        this.currentImage++;
     }
 
-    /**
- * This funktion moves the hero depending on the given parameter
- * 
- * @param {string} direction - direction
- * @param {string} axis - if up/ down or left/right
- * @param {number} multiplier - provides the move direction
-*/
-    move(direction, axis, multiplier) {
-        if (this.world.keyboard.left) {
-            this.otherDirection = true;
-        } else {
-            this.otherDirection = false;
-        }
-        // both if are necessary for keeping the hero within the canvas
-        if ((this.x >= Math.abs(this.speed * multiplier) || direction !== this.world.keyboard.left) && (this.x < this.world.level.levelEnd_x || direction !== this.world.keyboard.right)) {
-            if ((this.y >= -this.world.hero.height / 2.2 || direction !== this.world.keyboard.up) && (this.y <= this.world.hero.height * 1.13 || direction !== this.world.keyboard.down)) {
-                direction ? this[axis] += this.speed * multiplier : '';
-            }
-        }
-    }
+
+    
 }

@@ -83,7 +83,7 @@ class Boss extends Opponents {
             if (this.world2.hero.x > 1100) { // && !this.bossIntroDone
                 //debugger;
                 if (imgCount < 10) { //!this.bossIntroDone &&  //&& this.world2.hero.x > 1916 
-                    this.swimAnimate(this.bossIntroduce); //located in movableObjects
+                    this.swimAnimation(this.bossIntroduce); //located in movableObjects
                     imgCount++; //Intro should be played one time
                     //if (imgCount === 10) { this.bossIntroDone = true; }
                 }
@@ -91,7 +91,7 @@ class Boss extends Opponents {
         }, 140);
         setInterval(() => {
             if (imgCount === 10) {
-                this.swimAnimate(this.bossFloating);
+                this.swimAnimation(this.bossFloating);
             }
 
         }, 140);
@@ -101,14 +101,11 @@ class Boss extends Opponents {
      * 
      * @param {JSON} imgJson 
      */
-        swimAnimate(imgJson) {
-        
-           
+        swimAnimation(imgJson) {
                 this.currentImage === imgJson.length ? this.currentImage = 0 : '';
                 let path = imgJson[this.currentImage];
                 this.img = this.imageCache[path];
-                this.currentImage++;
-           
+                this.currentImage++;   
         }
 
 

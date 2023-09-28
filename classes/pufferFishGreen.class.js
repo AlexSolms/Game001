@@ -33,7 +33,8 @@ class PufferFishGreen extends PufferFish{
      constructor() {
          super().loadImage(this.puffFishGreenNormalMovement[1]);
          super.loadImages(this.puffFishGreenNormalMovement);
-         super.animate(this.puffFishGreenNormalMovement);
+         //super.animate(this.puffFishGreenNormalMovement);
+        super.animatePufferfish(this.puffFishGreenNormalMovement);
          console.log('PuffGreen ', this.y );
      }
 

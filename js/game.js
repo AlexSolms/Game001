@@ -18,6 +18,7 @@ window.addEventListener("keydown", (e) => {
    (e.code == "ArrowLeft" || e.code === "KeyA") ? keyboard.left = true : '';
    (e.code == "ArrowRight" || e.code === "KeyD") ? keyboard.right = true : '';
    e.code == "Space" ? keyboard.space = true : '';
+   keyboard.press = true;
 });
 
 window.addEventListener("keyup", (e) => {
@@ -26,5 +27,6 @@ window.addEventListener("keyup", (e) => {
    (e.code == "ArrowLeft" || e.code === "KeyA") ? keyboard.left = false : '';
    (e.code == "ArrowRight" || e.code === "KeyD") ? keyboard.right = false : '';
    e.code == "Space" ? keyboard.space = false : '';
+   keyboard.press = false;
 });
 

@@ -1,4 +1,14 @@
 class PufferFish extends Opponents{
-    height = 80;
+    height = 50;
     width = 80;
+
+    constructor() {
+        super();
+    }
+
+    animatePufferfish(imgJson){
+        setInterval(()=>{
+            super.swimAnimation(imgJson)
+        },140);
+    }
 }

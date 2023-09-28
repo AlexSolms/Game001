@@ -34,7 +34,8 @@ class PufferFishRed extends PufferFish{
         //debugger;
         super().loadImage(this.puffFishRedBubbleMovement[1]);
         super.loadImages(this.puffFishRedBubbleMovement);
-        super.animate(this.puffFishRedBubbleMovement);
+       // super.animate(this.puffFishRedBubbleMovement);
+        super.animatePufferfish(this.puffFishRedBubbleMovement);
         console.log('PuffRed ', this.y );
     }
 

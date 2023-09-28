@@ -17,7 +17,8 @@ class JellyFishPurple extends JellyFish{
      constructor() {
          super().loadImage(this.jellyPurpleMovement[0]);
          super.loadImages(this.jellyPurpleMovement);
-         super.animate(this.jellyPurpleMovement);
+         //super.animate(this.jellyPurpleMovement);
+         super.animateJellyfish(this.jellyPurpleMovement);
          console.log('JellyFishPurple ', this.y );
 
      }

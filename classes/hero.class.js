@@ -3,7 +3,10 @@ class Hero extends MovableObject {
     height = 250;
     y = 80;
     x = 0;
-    
+    longIdle = false;
+    action = 'idle';
+    idleTime = new Date().getTime();
+
     world;
 
     heroIdle = [
@@ -133,38 +136,67 @@ class Hero extends MovableObject {
     constructor() {
         super().loadImage('./images/1.Sharkie/1.IDLE/1.png');
         super.loadImages(this.heroSwim); //located in movableObjects
-        this.animateHero(this.heroSwim); //located here but move() is located in movableObjects
+        super.loadImages(this.heroIdle); //located in movableObjects
+        /*    super.loadImages(this.heroLongIdle); //located in movableObjects
+            super.loadImages(this.heroAttack); //located in movableObjects
+            super.loadImages(this.heroHurt); //located in movableObjects
+            super.loadImages(this.heroDead); //located in movableObjects */
+        this.animateHero(); //located here but move() is located in movableObjects
     }
 
 
-    /**  This function changes the images (source image Cache) of the object with an intervall
-    * 
-    * @param {JSON} imgJson - contains 
+    /**  
+    * This function changes the images (source image Cache) of the object with an intervall
     */
-    animateHero(imgJson) {
+    animateHero() {
         setInterval(() => {
-            
+
             this.move(this.world.keyboard.right, 'x', 30);
             this.move(this.world.keyboard.left, 'x', -30);
             this.move(this.world.keyboard.up, 'y', -30);
-            this.move(this.world.keyboard.down, 'y', 30);  
-            
-            
+            this.move(this.world.keyboard.down, 'y', 30);
+
             this.world.camera_x = -this.x;
+
         }, 100 / 6);
 
+        // swim animation normal swim
         setInterval(() => {
-            if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) this.swimAnimation(imgJson); 
+            //if (this.world.keyboard.right || this.world.keyboard.left || this.world.keyboard.up || this.world.keyboard.down) {
+             console.log('keboard.press: ',this.world.keyboard.press)
+            if(this.world.keyboard.press){
+            this.action = 'swim';
+                super.swimAnimation(this.heroSwim);
+            }else{
+                super.swimAnimation(this.heroIdle);
+            }
         }, 140);
+        /* setInterval(() => {
+            if (this.longIdle) {
+                console.log(this.longIdle);
+                super.swimAnimation(this.heroIdle);
+            };
+        }, 140); */
     }
 
-    swimAnimation(imgJson) {
-        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
-        let path = imgJson[this.currentImage];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-        
+    /**
+     * This funktion moves the hero depending on the given parameter
+     * 
+     * @param {string} direction - direction
+     * @param {string} axis - if up/ down or left/right
+     * @param {number} multiplier - provides the move direction
+    */
+    move(direction, axis, multiplier) {
+        if (this.world.keyboard.left) {
+            this.otherDirection = true; 
+        } else if (this.world.keyboard.right){ //this if keeps the direction as long as right was not pushed
+            this.otherDirection = false;
+        }
+        // both if are necessary for keeping the hero within the canvas
+        if ((this.x >= Math.abs(this.speed * multiplier) || direction !== this.world.keyboard.left) && (this.x < this.world.level.levelEnd_x || direction !== this.world.keyboard.right)) {
+            if ((this.y >= -this.world.hero.height / 2.2 || direction !== this.world.keyboard.up) && (this.y <= this.world.hero.height * 1.13 || direction !== this.world.keyboard.down)) {
+                direction ? this[axis] += this.speed * multiplier : '';
+            }
+        }
     }
-
-
 }

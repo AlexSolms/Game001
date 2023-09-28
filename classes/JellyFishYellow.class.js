@@ -20,7 +20,8 @@ class JellyFishYellow extends JellyFish {
     constructor() {
         super().loadImage(this.jellyYellowMovement[2]);
         super.loadImages(this.jellyYellowMovement);
-        super.animate(this.jellyYellowMovement);
+        //super.animate(this.jellyYellowMovement);
+       super.animateJellyfish(this.jellyYellowMovement);
         console.log('JellyYellow ', this.y );
 
     }
