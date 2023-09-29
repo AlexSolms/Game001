@@ -3,9 +3,13 @@ class Boss extends Opponents {
     width = 300;
     height = 400;
     y = 0;
-    x = 1300;
+    x = 1600;
     bossIntroDone = false;
     currentImage = 0;
+    hurt = false;
+    action = 'intro';
+    bossLiveCounter = 20;
+    idleTime = new Date().getTime();
 
     bossIntroduce = [
         './images/2.Enemy/3 Final Enemy/1.Introduce/1.png',
@@ -70,44 +74,63 @@ class Boss extends Opponents {
         super.loadImages(this.bossDead); //located in movableObjects
         super.loadImages(this.bossHurt); //located in movableObjects
         //super.animate(this.bossIntroduce);
-         this.animateBoss();
+        this.animateBoss();
 
     }
 
     animateBoss() {
         let imgCount = 0;
-
         setInterval(() => {
-            // console.log(this.world2.hero);
-            //debugger;
-            if (this.world2.hero.x > 1100) { // && !this.bossIntroDone
-                //debugger;
-                if (imgCount < 10) { //!this.bossIntroDone &&  //&& this.world2.hero.x > 1916 
-                    this.swimAnimation(this.bossIntroduce); //located in movableObjects
-                    imgCount++; //Intro should be played one time
-                    //if (imgCount === 10) { this.bossIntroDone = true; }
-                }
-            }
-        }, 140);
-        setInterval(() => {
-            if (imgCount === 10) {
-                this.swimAnimation(this.bossFloating);
-            }
-
-        }, 140);
+            imgCount = this.introAnimation(imgCount);
+            console.log(this.action);
+            this.idleAnimation();
+        }, 130);
+        //setInterval(() => { this.idleAnimation() }, 140);
     }
-        /**
-     * This function changes the images (source image Cache) of the object with an intervall
-     * 
-     * @param {JSON} imgJson 
-     */
-        swimAnimation(imgJson) {
-                this.currentImage === imgJson.length ? this.currentImage = 0 : '';
-                let path = imgJson[this.currentImage];
-                this.img = this.imageCache[path];
-                this.currentImage++;   
+
+
+    introAnimation(imgCount) {
+        if (this.world2.hero.x > 1100 && this.action === 'intro' && imgCount < 10) {
+                this.swimAnimation(this.bossIntroduce); //located in movableObjects
+                imgCount++; //Intro should be played one time
+                (imgCount === 10) ? this.action = 'idle' : '';
+        } return imgCount;
+    }
+
+
+    idleAnimation() { 
+        if (this.action === 'idle') { 
+            this.swimAnimation(this.bossFloating) ;
+         }
+    }
+
+    attackAnimation() { (this.action === 'attack') ? this.swimAnimation(this.bossAttack) : ''; }
+
+
+    hurtAnimation() {
+        if (this.hurt) {
+            this.action = 'hurt';
+            this.swimAnimation(this.bossHurt);
+            this.action = 'idle';
         }
+    }
 
+    deadAnimation() {
+        if (this.bossLiveCounter === 0) {
+            this.action = 'dead';
+            this.swimAnimation(this.bossDead);
+        }
+    }
 
-
+    /**
+    * This function changes the images (source image Cache) of the object with an intervall
+    * 
+    * @param {JSON} imgJson 
+    */
+    swimAnimation(imgJson) {
+        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
+        let path = imgJson[this.currentImage];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
 }

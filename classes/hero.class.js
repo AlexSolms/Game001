@@ -6,7 +6,10 @@ class Hero extends MovableObject {
     longIdle = false;
     idleTime = new Date().getTime();
     imgIdleCount = 0
+    heroAction = 'idle';
     world;
+    target;
+    opponent;
 
     heroIdle = [
         './images/1.Sharkie/1.IDLE/1.png',
@@ -171,20 +174,55 @@ class Hero extends MovableObject {
             this.world.camera_x = -this.x;
         }, 100 / 6);
         setInterval(() => {this.normalSwimAndIdleAnimation()}, 140);
+        setInterval(() => {this.attackAnimation()}, 140);
+        setInterval(() => {this.hurtAnimation()}, 140);
+        setInterval(() => {this.deadAnimation()}, 140);
     }
 
     normalSwimAndIdleAnimation(){
         if (this.world.keyboard.press) {
-            super.swimAnimation(this.heroSwim, 1);
-            this.idleTime = new Date().getTime();
             this.imgIdleCount = 0;
+            this.action = 'swim';
+            super.swimAnimation(this.heroSwim, 1);
+            this.idleTime = new Date().getTime();   
         }
         (!this.world.keyboard.press && this.imgIdleCount == 0) ? super.swimAnimation(this.heroIdle) : '';           
         if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000 && this.imgIdleCount < 10) {
             super.swimAnimation(this.heroLongIdle1);
             this.imgIdleCount++;
+            this.action = 'longIdle';
         }
-        (this.imgIdleCount == 10) ? super.swimAnimation(this.heroLongIdle2) : '';
+        (this.imgIdleCount == 10 && this.action === 'longIdle') ? super.swimAnimation(this.heroLongIdle2) : '';
+    }
+
+    attackAnimation(){
+        if(this.target === 'pufferFish'){
+            super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+        }
+        if(this.target === 'jellyFish'){
+            super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+        }
+        if(this.target === 'whal'){
+            super.swimAnimation(this.heroAttack.bubbleTrapWhale);
+        }
+    }
+
+    hurtAnimation(){
+        if(this.opponent === 'pufferFish' || this.opponent === 'whal'){
+            super.swimAnimation(this.heroHurt.poisened);
+        }
+        if(this.opponent === 'jellyFish'){
+            super.swimAnimation(this.heroHurt.shocked);
+        }  
+    }
+
+    deadAnimation(){
+        if(this.opponent === 'pufferFish' || this.opponent === 'whal'){
+            super.swimAnimation(this.heroDead.poisened);
+        }
+        if(this.opponent === 'jellyFish'){
+            super.swimAnimation(this.heroDead.shocked);
+        }  
     }
 
     /**
