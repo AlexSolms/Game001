@@ -9,7 +9,10 @@ class Boss extends Opponents {
     hurt = false;
     action = 'intro';
     bossLiveCounter = 20;
-    idleTime = new Date().getTime();
+    idleTime; // = new Date().getTime();
+    attackImgCounter = 0;
+    
+    reset = true;
 
     bossIntroduce = [
         './images/2.Enemy/3 Final Enemy/1.Introduce/1.png',
@@ -82,7 +85,6 @@ class Boss extends Opponents {
         let imgCount = 0;
         setInterval(() => {
             imgCount = this.introAnimation(imgCount);
-            console.log(this.action);
             this.idleAnimation();
         }, 130);
         //setInterval(() => { this.idleAnimation() }, 140);
@@ -91,26 +93,40 @@ class Boss extends Opponents {
 
     introAnimation(imgCount) {
         if (this.world2.hero.x > 1100 && this.action === 'intro' && imgCount < 10) {
-                this.swimAnimation(this.bossIntroduce); //located in movableObjects
-                imgCount++; //Intro should be played one time
-                (imgCount === 10) ? this.action = 'idle' : '';
+            super.swimAnimation(this.bossIntroduce); //located in movableObjects
+            imgCount++; //Intro should be played one time
+            (imgCount === 10) ? this.action = 'idle' : '';
         } return imgCount;
     }
 
 
-    idleAnimation() { 
-        if (this.action === 'idle') { 
-            this.swimAnimation(this.bossFloating) ;
-         }
+    idleAnimation() {
+        if (this.action === 'idle') {
+            !this.idleTime ? this.idleTime = new Date().getTime() : '';
+            (new Date().getTime() - this.idleTime > 4000) ? this.attackAnimation() : super.swimAnimation(this.bossFloating);    
+        }
     }
 
-    attackAnimation() { (this.action === 'attack') ? this.swimAnimation(this.bossAttack) : ''; }
+    attackAnimation() {    
+            this.action = 'attack';
+            (this.action === 'attack') ? super.swimAnimation(this.bossAttack) : '';
+            this.action = 'idle';
+            this.resetAttack();
+    }
+
+    resetAttack(){
+        this.attackImgCounter++;
+        if(this.attackImgCounter > this.bossAttack.length){
+             this.idleTime = new Date().getTime();
+             this.attackImgCounter = 0;
+        }
+    }
 
 
     hurtAnimation() {
         if (this.hurt) {
             this.action = 'hurt';
-            this.swimAnimation(this.bossHurt);
+            super.swimAnimation(this.bossHurt);
             this.action = 'idle';
         }
     }
@@ -118,19 +134,7 @@ class Boss extends Opponents {
     deadAnimation() {
         if (this.bossLiveCounter === 0) {
             this.action = 'dead';
-            this.swimAnimation(this.bossDead);
+            super.swimAnimation(this.bossDead);
         }
-    }
-
-    /**
-    * This function changes the images (source image Cache) of the object with an intervall
-    * 
-    * @param {JSON} imgJson 
-    */
-    swimAnimation(imgJson) {
-        this.currentImage === imgJson.length ? this.currentImage = 0 : '';
-        let path = imgJson[this.currentImage];
-        this.img = this.imageCache[path];
-        this.currentImage++;
     }
 }

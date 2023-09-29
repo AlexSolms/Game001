@@ -202,7 +202,7 @@ class Hero extends MovableObject {
         if(this.target === 'jellyFish'){
             super.swimAnimation(this.heroAttack.bubbleTrapNormal);
         }
-        if(this.target === 'whal'){
+        if(this.target === 'wahl'){
             super.swimAnimation(this.heroAttack.bubbleTrapWhale);
         }
     }
