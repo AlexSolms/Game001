@@ -7,12 +7,38 @@ BACKGROUNDLAYER = {
 }
 
 
-const level1 = new Level([
+const getRandomOpponent = () => new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)];
+
+const level1 = new Level(Array.from({ length: 16 }, () => getRandomOpponent()), [
+  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgWater, 1919 * i, 0, 400)),
+  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgLayer2, 1919 * i, -180, 600)),
+  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.ngLayer1, 1919 * i, -20, 500)),
+  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgFloor, 1919 * i, 80, 400))
+]);
+
+
+
+
+/* const level1 = new Level([
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
+    new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
     new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
     new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
     new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)]()
     
-],
+], 
     [
         new Background(this.BACKGROUNDLAYER.bgWater, 0, 0, 400),
         new Background(this.BACKGROUNDLAYER.bgLayer2, 0, -180, 600),
@@ -24,3 +50,4 @@ const level1 = new Level([
         new Background(this.BACKGROUNDLAYER.ngLayer1, 1919, -20, 500),
         new Background(this.BACKGROUNDLAYER.bgFloor, 1919, 80, 400)
     ]);
+ */

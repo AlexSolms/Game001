@@ -48,22 +48,27 @@ class World {
 
     drawImg(objektToDraw) {
         if(this instanceof Hero){debugger;}
-        if (objektToDraw.otherDirection) {
-            this.ctx.save();  // saves the original object
-            this.ctx.translate(objektToDraw.width, 0); // moves the object with objectwidth to avoid image jump
-            this.ctx.scale(-1, 1); // flips the image
-            objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
-        }
+        if (objektToDraw.otherDirection) this.flipImg(objektToDraw);
         try {
-            this.ctx.drawImage(objektToDraw.img, objektToDraw.x, objektToDraw.y, objektToDraw.width, objektToDraw.height);
-        }catch(e){
+            objektToDraw.draw(this.ctx);
+            objektToDraw.drawFrame(this.ctx);
+          }catch(e){
             console.warn('Error loading image ', e);
             console.warn('Could not load image ', this.img.scr);
         }
-        if (objektToDraw.otherDirection) {
-            objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate
-            this.ctx.restore() // restores the objekt 
-        }
+        if (objektToDraw.otherDirection) this.flipImgBack(objektToDraw);
+    }
+
+    flipImg(objektToDraw){
+        this.ctx.save();  // saves the original object
+        this.ctx.translate(objektToDraw.width, 0); // moves the object with objectwidth to avoid image jump
+        this.ctx.scale(-1, 1); // flips the image
+        objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
+    }
+
+    flipImgBack(objektToDraw){
+        objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate
+        this.ctx.restore() // restores the objekt 
     }
 }
 

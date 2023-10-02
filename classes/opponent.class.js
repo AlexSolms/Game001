@@ -1,5 +1,14 @@
 class Opponents extends MovableObject{
- x=600;
- y=Math.floor(Math.random() * (390 - 10 + 1)) + 10;
+
+    //hier muss eine Funktion rein, die y und x Koordinaten sämtlicher normalen Gegner in dem Bereich von x=500 bis x= 2500 und y=0 bis y=379 zeichnet.
+
+ x=Math.floor(Math.random() * (2301 - 500)) + 500;
+ y=Math.floor(Math.random() * (390 - 11)) + 10;
+
+ constructor(){
+    super();
+ }
  
  }
+
+ 

@@ -15,7 +15,7 @@ class MovableObject {
      * @param {string} path - path of image
      */
     loadImage(path) {
-       //console.log('Pfad: ',path);
+        //console.log('Pfad: ',path);
         this.img = new Image();
         this.img.src = path;
     }
@@ -42,11 +42,11 @@ class MovableObject {
      */
     swimAnimation(imgJson, test) {
         if (this instanceof Hero) {
-           //console.log(imgJson);
-           if (test == 1) {
-           // console.log(imgJson);
-            //debugger;
-           } 
+            //console.log(imgJson);
+            if (test == 1) {
+                // console.log(imgJson);
+                //debugger;
+            }
         }
         //Ich habe hier einen Fehler, der erzeuget wird wenn ich eine neue animation laden will
         // läuft die alte Animation noch
@@ -58,5 +58,26 @@ class MovableObject {
     }
 
 
-    
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+
+    drawFrame(ctx) {
+        if (this instanceof Hero || this instanceof Boss || this instanceof Opponents) {
+            
+        
+        ctx.beginPath();
+        ctx.lineWidth = '5';
+        ctx.strokeStyle = 'white';
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.stroke();
+    }
+    }
+
+
+    collitionDetector() {
+
+    }
+
 }
