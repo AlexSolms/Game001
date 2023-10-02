@@ -10,8 +10,8 @@ class Boss extends Opponents {
     action = 'intro';
     bossLiveCounter = 20;
     idleTime; // = new Date().getTime();
-    attackImgCounter = 0;
-    
+
+
     reset = true;
 
     bossIntroduce = [
@@ -70,56 +70,86 @@ class Boss extends Opponents {
     ]
     constructor() {
 
-        super().loadImage('./images/2.Enemy/3 Final Enemy/1.Introduce/1.png');
-        super.loadImages(this.bossIntroduce); //located in movableObjects
-        super.loadImages(this.bossFloating); //located in movableObjects
-        super.loadImages(this.bossAttack); //located in movableObjects
-        super.loadImages(this.bossDead); //located in movableObjects
-        super.loadImages(this.bossHurt); //located in movableObjects
-        //super.animate(this.bossIntroduce);
+        super().loadImage('');
+        super.loadImages(this.bossIntroduce);
+        super.loadImages(this.bossFloating);
+        super.loadImages(this.bossAttack);
+        super.loadImages(this.bossDead);
+        super.loadImages(this.bossHurt);
         this.animateBoss();
-
     }
 
     animateBoss() {
-        let imgCount = 0;
+        let imgCountIntro = 0;
+        let imgCountAttack = 0;
         setInterval(() => {
-            imgCount = this.introAnimation(imgCount);
-            this.idleAnimation();
-        }, 130);
-        //setInterval(() => { this.idleAnimation() }, 140);
+            imgCountIntro = this.introAnimation(imgCountIntro);
+            imgCountAttack = this.idleAnimation(imgCountAttack);
+        }, 100);
     }
 
-
+    /**
+     * 
+     * @param {Number} imgCount - imgCount is used to stop the intro animation after first run
+     * @returns - imgCount
+     */
     introAnimation(imgCount) {
         if (this.world2.hero.x > 1100 && this.action === 'intro' && imgCount < 10) {
-            super.swimAnimation(this.bossIntroduce); //located in movableObjects
-            imgCount++; //Intro should be played one time
-            (imgCount === 10) ? this.action = 'idle' : '';
+            super.swimAnimation(this.bossIntroduce);
+            if (++imgCount === 10) this.action = 'idle';
         } return imgCount;
     }
 
-
-    idleAnimation() {
-        if (this.action === 'idle') {
-            !this.idleTime ? this.idleTime = new Date().getTime() : '';
-            (new Date().getTime() - this.idleTime > 4000) ? this.attackAnimation() : super.swimAnimation(this.bossFloating);    
+    /**
+     * This function calls the boss idle animation and after a specific time the boss attack animation
+     * 
+     * @param {number} imgCount - imgCount is used in function attackAnimation() to reset the attack animation
+     * @returns - imgCount
+     */
+    idleAnimation(imgCount) {
+        if (this.action !== 'idle') return imgCount;
+        const posititon_x = 1600;
+        this.followAnimation();
+        this.idleTime = this.idleTime || new Date().getTime(); //if this.idleTime == null or undefined the right one is taken 
+        if (new Date().getTime() - this.idleTime > 4000) imgCount = this.attackAnimation(imgCount);
+        else {
+            this.x = posititon_x; // reset boss position after attack
+            super.swimAnimation(this.bossFloating);
         }
+        return imgCount;
     }
 
-    attackAnimation() {    
-            this.action = 'attack';
-            (this.action === 'attack') ? super.swimAnimation(this.bossAttack) : '';
-            this.action = 'idle';
-            this.resetAttack();
+    /**
+     * With this function the boss will follow hero with a delay 
+     */
+    followAnimation() {
+        const delayFactor = 0.05;
+        const targetY = this.world2.hero.y - 100;
+        this.y += (targetY - this.y) * delayFactor;
     }
 
-    resetAttack(){
-        this.attackImgCounter++;
-        if(this.attackImgCounter > this.bossAttack.length){
-             this.idleTime = new Date().getTime();
-             this.attackImgCounter = 0;
-        }
+    /**
+     * THis function calls the boss attack animation inklusive attack move
+     * 
+     * @param number imgCount  - imgCount is used in function resetAttack() to reset the attack time
+     * @returns - imgCount
+     */
+    attackAnimation(imgCount) {
+        this.action = 'attack';
+        this.x -= 30;
+        if (this.action === 'attack') super.swimAnimation(this.bossAttack);
+        this.action = 'idle';
+        this.resetAttack(++imgCount);
+        return imgCount;
+    }
+
+    /**
+     * This function resets the attack time
+     * 
+     * @param {number} attackImgCounter - used for reset the time for next attack animation
+     */
+    resetAttack(attackImgCounter) {
+        if (attackImgCounter % this.bossAttack.length === 0) this.idleTime = new Date().getTime();
     }
 
 
