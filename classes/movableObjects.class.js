@@ -63,27 +63,52 @@ class MovableObject {
     }
 
 
-    drawFrame(ctx) {
-        this.drawFrameOpponents(ctx);
-        this.drawFrameHero(ctx);
+    drawHitBox(ctx) {
+        this.drawHitBoxOpponents(ctx);
+        this.drawHitBoxHero(ctx);
+        this.drawHitBoxBoss(ctx);
+        this.drawHeroLineOfSight(ctx);
     }
 
-    drawFrameOpponents(ctx){
+    drawHitBoxOpponents(ctx){
         if (this instanceof Opponents) {
             ctx.beginPath();
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'white';
             ctx.arc(this.x + this.width / 2, this.y + this.height / 2, Math.max(this.width, this.height) / 2, 0, 2 * Math.PI);
-            console.log('radius: ', Math.max(this.width, this.height) / 2);
+            //console.log('radius: ', Math.max(this.width, this.height) / 2);
             ctx.stroke();
         }
     }
-    drawFrameHero(ctx){
-        if (this instanceof Hero || this instanceof Boss) {
+    drawHitBoxHero(ctx){
+        if (this instanceof Hero) {
             ctx.beginPath();
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'white';
             ctx.rect(this.x +40, this.y + 100, this.width - 80, this.height - 150);
+            // ich muss hier 2 rechtecke entwickeln, die an die Kontrahenten angepasst sind
+            //console.log('radius: ', Math.max(this.width, this.height) / 2);
+            ctx.stroke();
+        }
+    }
+    drawHitBoxBoss(ctx){
+        if (this instanceof Boss) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'white';
+            ctx.rect(this.x + 20, this.y + 120, this.width - 40, this.height - 170);
+            // ich muss hier 2 rechtecke entwickeln, die an die Kontrahenten angepasst sind
+            //console.log('radius: ', Math.max(this.width, this.height) / 2);
+            ctx.stroke();
+        }
+    }
+
+    drawHeroLineOfSight(ctx){
+        if (this instanceof Hero) {
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'white';
+            ctx.rect(this.x + 250, this.y + 150, 150, 0);
             // ich muss hier 2 rechtecke entwickeln, die an die Kontrahenten angepasst sind
             //console.log('radius: ', Math.max(this.width, this.height) / 2);
             ctx.stroke();

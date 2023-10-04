@@ -5,4 +5,5 @@ class Keyboard {
     right = false;
     space = false;
     press = false;
+    debug = false;
 }

@@ -1,6 +1,5 @@
 class World {
     level = level1;
-
     hero = new Hero();
     boss = new Boss();
     canvas;
@@ -26,14 +25,11 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // clears canvas
         this.ctx.translate(this.camera_x, 0);
-
         this.drawMultObj(this.level.oceanBackground);
         this.drawMultObj(this.level.activeOpponent);
         this.drawImg(this.hero);
         this.drawImg(this.boss);
-
         this.ctx.translate(-this.camera_x, 0);
-
         let self = this;  // Alternative zu this.draw.bind(this);
         requestAnimationFrame(function () { // requestAnimationFrame calls function draw() in sync with the refresh rate of the browser. 
             self.draw();  // self is neccessary to bind the correct this (from World) to the draw
@@ -51,7 +47,8 @@ class World {
         if (objektToDraw.otherDirection) this.flipImg(objektToDraw);
         try {
             objektToDraw.draw(this.ctx);
-            objektToDraw.drawFrame(this.ctx);
+            if(this.keyboard.debug) objektToDraw.drawHitBox(this.ctx);
+            //console.log('debugMode: ',this.keyboard.debug);
           }catch(e){
             console.warn('Error loading image ', e);
             console.warn('Could not load image ', this.img.scr);
