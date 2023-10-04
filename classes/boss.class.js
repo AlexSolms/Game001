@@ -1,4 +1,4 @@
-class Boss extends Opponents {
+class Boss extends MovableObject {
     world2;
     width = 300;
     height = 400;

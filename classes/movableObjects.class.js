@@ -64,20 +64,37 @@ class MovableObject {
 
 
     drawFrame(ctx) {
-        if (this instanceof Hero || this instanceof Boss || this instanceof Opponents) {
-            
-        
-        ctx.beginPath();
-        ctx.lineWidth = '5';
-        ctx.strokeStyle = 'white';
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
-    }
+        this.drawFrameOpponents(ctx);
+        this.drawFrameHero(ctx);
     }
 
+    drawFrameOpponents(ctx){
+        if (this instanceof Opponents) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'white';
+            ctx.arc(this.x + this.width / 2, this.y + this.height / 2, Math.max(this.width, this.height) / 2, 0, 2 * Math.PI);
+            console.log('radius: ', Math.max(this.width, this.height) / 2);
+            ctx.stroke();
+        }
+    }
+    drawFrameHero(ctx){
+        if (this instanceof Hero || this instanceof Boss) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'white';
+            ctx.rect(this.x +40, this.y + 100, this.width - 80, this.height - 150);
+            // ich muss hier 2 rechtecke entwickeln, die an die Kontrahenten angepasst sind
+            //console.log('radius: ', Math.max(this.width, this.height) / 2);
+            ctx.stroke();
+        }
+    }
 
-    collitionDetector() {
 
+    collitionDetector(obj_1, obj_2) {
+        let dx = obj_2.x - obj_1.x;
+        let dy = obj_2.y - obj_1.y;
+        let r1 = Math.max(this.width, this.height) / 2;
     }
 
 }
