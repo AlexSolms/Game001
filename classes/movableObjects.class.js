@@ -115,6 +115,15 @@ class MovableObject {
         }
     }
 
+    isColliding(obj) { //Ich muss hier die aktualliersten Koordinaten der frames übergeben
+        return (
+          this.x < obj.x + obj.width &&
+          this.x + this.width > obj.x &&
+          this.y < obj.y + obj.height &&
+          this.y + this.height > obj.y
+        );
+      }
+
 
     collitionDetector(obj_1, obj_2) {
         let dx = obj_2.x - obj_1.x;

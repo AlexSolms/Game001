@@ -2,6 +2,7 @@ class World {
     level = level1;
     hero = new Hero();
     boss = new Boss();
+    opponent = new Opponents();
     canvas;
     ctx;
     keyboard;
@@ -14,12 +15,25 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
+        this.checkCollisions();
         //console.log(this.keyboard);
     }
 
     setWorld() {
         this.hero.world = this; // muss testen ob ich hier nicht einfach this.world statt this.hero.world schreiben kann
         this.boss.world2 = this;
+    }
+
+    checkCollisions() {
+        setInterval(() => {
+            this.level.activeOpponent.forEach((opponent) => {
+                if (this.hero.isColliding(opponent)) {
+                    console.log('kollision with hero: ', opponent);
+
+                }
+            });
+
+        }, 1000)
     }
 
     draw() {
@@ -43,27 +57,27 @@ class World {
     }
 
     drawImg(objektToDraw) {
-        if(this instanceof Hero){debugger;}
+        if (this instanceof Hero) { debugger; }
         if (objektToDraw.otherDirection) this.flipImg(objektToDraw);
         try {
             objektToDraw.draw(this.ctx);
-            if(this.keyboard.debug) objektToDraw.drawHitBox(this.ctx);
+            if (this.keyboard.debug) objektToDraw.drawHitBox(this.ctx);
             //console.log('debugMode: ',this.keyboard.debug);
-          }catch(e){
+        } catch (e) {
             console.warn('Error loading image ', e);
             console.warn('Could not load image ', this.img.scr);
         }
         if (objektToDraw.otherDirection) this.flipImgBack(objektToDraw);
     }
 
-    flipImg(objektToDraw){
+    flipImg(objektToDraw) {
         this.ctx.save();  // saves the original object
         this.ctx.translate(objektToDraw.width, 0); // moves the object with objectwidth to avoid image jump
         this.ctx.scale(-1, 1); // flips the image
         objektToDraw.x = objektToDraw.x * -1; // set object on the mirrored coordinate
     }
 
-    flipImgBack(objektToDraw){
+    flipImgBack(objektToDraw) {
         objektToDraw.x = objektToDraw.x * -1 // set object on the mirrored coordinate
         this.ctx.restore() // restores the objekt 
     }

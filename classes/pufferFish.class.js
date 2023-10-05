@@ -3,7 +3,7 @@ class PufferFish extends Opponents{
     width = 80;
 
     constructor() {
-        super();
+        super(); //.movePufferFish();
     }
 
     animatePufferfish(imgJson){

@@ -1,24 +1,28 @@
 class Level {
-    activeOpponent;
-    oceanBackground;
-    levelEnd_x = 3300; //max How far hero can swim, used in class hero
-    collisionTracker = false;
+  activeOpponent;
+  oceanBackground;
+  levelEnd_x = 3300; //max How far hero can swim, used in class hero
+  // collisionTracker = false;
 
-    constructor(activeOpponent, oceanBackground) {
-       // debugger;
-        this.activeOpponent = activeOpponent;
-        this.oceanBackground = oceanBackground;
-        this.checkCollisions(activeOpponent);
-    }
+  constructor(activeOpponent, oceanBackground) {
+  
+    // debugger;
+    this.activeOpponent = activeOpponent;
+    this.oceanBackground = oceanBackground;
+    this.checkCollisionsUntilNoOverlap(activeOpponent);
+  }
 
-     // Funktion zur Überprüfung von Kollisionen
-  checkCollisions(opponents) {
-    for (let i = 0; i < opponents.length; i++) {
-      for (let j = i + 1; j < opponents.length; j++) {
-        if (this.isColliding(opponents[i], opponents[j])) {
-            
-          // Wenn Kollision, setze neue Koordinaten für opponents[j]
-          this.adjustCollision(opponents[j]);
+  // Funktion zur Überprüfung von Kollisionen
+  checkCollisionsUntilNoOverlap(opponents) {
+    let hasOverlap = true;
+    while (hasOverlap) {
+      hasOverlap = false;
+      for (let i = 0; i < opponents.length; i++) {
+        for (let j = i + 1; j < opponents.length; j++) {
+          if (this.isColliding(opponents[i], opponents[j])) {
+            this.adjustCollision(opponents[j]);
+            hasOverlap = true;
+          }
         }
       }
     }
@@ -33,19 +37,10 @@ class Level {
       obj1.y + obj1.height > obj2.y
     );
   }
-  adjustCollision(obj) {
-    this.collisionTracker = false;
-    console.log('Kollision:', obj);
-    obj.x = obj.x - obj.width;
-    if(obj.y + obj.height >= 376){
 
-      //  debugger;
-    obj.y = obj.y + obj.height;
-    console.log('new: ', obj);
-}else{obj.y = obj.y - obj.height;
-    console.log('new: ', obj);}
-    // Hier kannst du deine Logik implementieren, um die Koordinaten anzupassen.
-    // Zum Beispiel: obj.x = neueX; obj.y = neueY;
-    // Du musst sicherstellen, dass die neuen Koordinaten nicht mit anderen Objekten kollidieren.
+
+  adjustCollision(obj) {
+    obj.x = Math.floor(Math.random() * 2500) + 500;
+    obj.y = Math.floor(Math.random() * 379) + 10; 
   }
 }
