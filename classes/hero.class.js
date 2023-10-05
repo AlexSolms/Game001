@@ -167,26 +167,27 @@ class Hero extends MovableObject {
     */
     animateHero() {
         setInterval(() => {
+            console.log('hero: ', this.x);
             this.move(this.world.keyboard.right, 'x', 30);
             this.move(this.world.keyboard.left, 'x', -30);
             this.move(this.world.keyboard.up, 'y', -30);
             this.move(this.world.keyboard.down, 'y', 30);
             this.world.camera_x = -this.x;
         }, 100 / 6);
-        setInterval(() => {this.normalSwimAndIdleAnimation()}, 140);
-        setInterval(() => {this.attackAnimation()}, 140);
-        setInterval(() => {this.hurtAnimation()}, 140);
-        setInterval(() => {this.deadAnimation()}, 140);
+        setInterval(() => { this.normalSwimAndIdleAnimation() }, 140);
+        setInterval(() => { this.attackAnimation() }, 140);
+        setInterval(() => { this.hurtAnimation() }, 140);
+        setInterval(() => { this.deadAnimation() }, 140);
     }
 
-    normalSwimAndIdleAnimation(){
+    normalSwimAndIdleAnimation() {
         if (this.world.keyboard.press) {
             this.imgIdleCount = 0;
             this.action = 'swim';
             super.swimAnimation(this.heroSwim, 1);
-            this.idleTime = new Date().getTime();   
+            this.idleTime = new Date().getTime();
         }
-        (!this.world.keyboard.press && this.imgIdleCount == 0) ? super.swimAnimation(this.heroIdle) : '';           
+        (!this.world.keyboard.press && this.imgIdleCount == 0) ? super.swimAnimation(this.heroIdle) : '';
         if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000 && this.imgIdleCount < 10) {
             super.swimAnimation(this.heroLongIdle1);
             this.imgIdleCount++;
@@ -195,34 +196,34 @@ class Hero extends MovableObject {
         (this.imgIdleCount == 10 && this.action === 'longIdle') ? super.swimAnimation(this.heroLongIdle2) : '';
     }
 
-    attackAnimation(){
-        if(this.target === 'pufferFish'){
+    attackAnimation() {
+        if (this.target === 'pufferFish') {
             super.swimAnimation(this.heroAttack.bubbleTrapNormal);
         }
-        if(this.target === 'jellyFish'){
+        if (this.target === 'jellyFish') {
             super.swimAnimation(this.heroAttack.bubbleTrapNormal);
         }
-        if(this.target === 'wahl'){
+        if (this.target === 'wahl') {
             super.swimAnimation(this.heroAttack.bubbleTrapWhale);
         }
     }
 
-    hurtAnimation(){
-        if(this.opponent === 'pufferFish' || this.opponent === 'whal'){
+    hurtAnimation() {
+        if (this.opponent === 'pufferFish' || this.opponent === 'whal') {
             super.swimAnimation(this.heroHurt.poisened);
         }
-        if(this.opponent === 'jellyFish'){
+        if (this.opponent === 'jellyFish') {
             super.swimAnimation(this.heroHurt.shocked);
-        }  
+        }
     }
 
-    deadAnimation(){
-        if(this.opponent === 'pufferFish' || this.opponent === 'whal'){
+    deadAnimation() {
+        if (this.opponent === 'pufferFish' || this.opponent === 'whal') {
             super.swimAnimation(this.heroDead.poisened);
         }
-        if(this.opponent === 'jellyFish'){
+        if (this.opponent === 'jellyFish') {
             super.swimAnimation(this.heroDead.shocked);
-        }  
+        }
     }
 
     /**
@@ -233,16 +234,15 @@ class Hero extends MovableObject {
      * @param {number} multiplier - provides the move direction
     */
     move(direction, axis, multiplier) {
-        if (this.world.keyboard.left) {
-            this.otherDirection = true;
-        } else if (this.world.keyboard.right) { //this if keeps the direction as long as right was not pushed
-            this.otherDirection = false;
-        }
-        // both if are necessary for keeping the hero within the canvas
-        if ((this.x >= Math.abs(this.speed * multiplier) || direction !== this.world.keyboard.left) && (this.x < this.world.level.levelEnd_x || direction !== this.world.keyboard.right)) {
-            if ((this.y >= -this.world.hero.height / 2.2 || direction !== this.world.keyboard.up) && (this.y <= this.world.hero.height * 1.13 || direction !== this.world.keyboard.down)) {
-                direction ? this[axis] += this.speed * multiplier : '';
-            }
+        if (this.world.keyboard.left) this.otherDirection = true;
+        if (this.world.keyboard.right) this.otherDirection = false; //this if keeps the direction as long as right was not pushed 
+        const speedMult = this.speed * multiplier; 
+        const topBorder = this.y >= -this.world.hero.height / 2.2 || direction !== this.world.keyboard.up;
+        const bottomBorder = this.y <= this.world.hero.height * 1.13 || direction !== this.world.keyboard.down;
+        const rightBorder = this.x < this.world.level.levelEnd_x || direction !== this.world.keyboard.right;
+        const leftBorder = this.x >= (this.x > 3100 ? (3100 + Math.abs(speedMult)) : Math.abs(speedMult)) || direction !== this.world.keyboard.left; //Math.abs(speedMult) needed to keep hero.x greater then border.x
+        if (topBorder && bottomBorder && rightBorder && leftBorder) {
+            direction && (this[axis] += speedMult);
         }
     }
 }

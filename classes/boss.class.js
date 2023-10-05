@@ -3,7 +3,7 @@ class Boss extends MovableObject {
     width = 300;
     height = 400;
     y = 0;
-    x = 1600;
+    x = 3650;
     bossIntroDone = false;
     currentImage = 0;
     hurt = false;
@@ -94,7 +94,7 @@ class Boss extends MovableObject {
      * @returns - imgCount
      */
     introAnimation(imgCount) {
-        if (this.world2.hero.x > 1100 && this.action === 'intro' && imgCount < 10) {
+        if (this.world2.hero.x > 3100 && this.action === 'intro' && imgCount < 10) {
             super.swimAnimation(this.bossIntroduce);
             if (++imgCount === 10) this.action = 'idle';
         } return imgCount;
@@ -108,7 +108,7 @@ class Boss extends MovableObject {
      */
     idleAnimation(imgCount) {
         if (this.action !== 'idle') return imgCount;
-        const posititon_x = 1600;
+        const posititon_x = 3650;
         this.followAnimation();
         this.idleTime = this.idleTime || new Date().getTime(); //if this.idleTime == null or undefined the right one is taken 
         if (new Date().getTime() - this.idleTime > 4000) imgCount = this.attackAnimation(imgCount);
