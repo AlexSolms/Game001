@@ -19,7 +19,9 @@ class JellyFishGreen extends JellyFish{
          super.loadImages(this.jellyGreenMovement);
          //super.animate(this.jellyGreenMovement);
          super.animateJellyfish(this.jellyGreenMovement);
+         //super.movePufferFish();
          console.log('JellyGreen ', this.y );
      }
 
+     
 }

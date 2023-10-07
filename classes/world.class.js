@@ -2,7 +2,7 @@ class World {
     level = level1;
     hero = new Hero();
     boss = new Boss();
-    opponent = new Opponents();
+    //opponent = new Opponents();
     canvas;
     ctx;
     keyboard;
@@ -22,18 +22,23 @@ class World {
     setWorld() {
         this.hero.world = this; // muss testen ob ich hier nicht einfach this.world statt this.hero.world schreiben kann
         this.boss.world2 = this;
+        //this.opponent.world3 = this;
     }
 
     checkCollisions() {
         setInterval(() => {
             this.level.activeOpponent.forEach((opponent) => {
                 if (this.hero.isColliding(opponent)) {
-                    console.log('kollision with hero: ', opponent);
-
+                    //console.log('kollision with hero: ', opponent);
                 }
+                if (opponent instanceof PufferFish && opponent.isHeroNear(this.hero)) {
+                   //  console.log('Hero is near PufferFish:', opponent);
+                    opponent.moveTowardsHero(this.hero);
+                    // Do something when the hero is near the pufferfish
+                }
+                
             });
-
-        }, 1000)
+        }, 500)
     }
 
     draw() {

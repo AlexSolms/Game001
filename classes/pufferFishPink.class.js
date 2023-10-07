@@ -1,20 +1,20 @@
 class PufferFishPink extends PufferFish{
     
-    puffFishPinkNormalMovement = [
+    puffFishNormalMovement = [
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim3.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim4.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim5.png'
     ]
-    puffFishPinkBubbleMovement = [
+    puffFishBubbleMovement = [
         './images/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim1.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim2.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim3.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim4.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim5.png'
     ]
-    puffFishPinkTransistion = [
+    puffFishTransistion = [
         './images/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition1.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition2.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition3.png',
@@ -23,7 +23,7 @@ class PufferFishPink extends PufferFish{
 
     ]
 
-    puffFishPinkDie = [
+    puffFishDie = [
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2_1.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2_2.png',
         './images/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2_3.png'
@@ -31,10 +31,12 @@ class PufferFishPink extends PufferFish{
     //currentImage = 0;
 
     constructor() {
-        super().loadImage(this.puffFishPinkNormalMovement[1]);
-        super.loadImages(this.puffFishPinkNormalMovement);
-        //super.animate(this.puffFishPinkNormalMovement);
-       super.animatePufferfish(this.puffFishPinkNormalMovement);
+        super();
+         super.loadImage(this.puffFishNormalMovement[1]);
+         super.loadImages(this.puffFishNormalMovement);
+         super.loadImages(this.puffFishBubbleMovement);
+        
+       super.animatePufferfish(this.puffFishNormalMovement);
         console.log('PuffPink ', this.y );
     }
 

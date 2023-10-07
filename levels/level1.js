@@ -1,3 +1,4 @@
+
 OPPONENTS = [JellyFishGreen, JellyFishYellow, JellyFishPink, JellyFishPurple, PufferFishGreen, PufferFishPink, PufferFishRed];
 BACKGROUNDLAYER = {
     bgWater: './images/3. Background/Layers/5. Water/D.png',

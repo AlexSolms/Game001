@@ -116,19 +116,33 @@ class MovableObject {
     }
 
     isColliding(obj) { //Ich muss hier die aktualliersten Koordinaten der frames übergeben
+        const heroHitBox = this.getHeroHitBox();
+        
         return (
-          this.x < obj.x + obj.width &&
-          this.x + this.width > obj.x &&
-          this.y < obj.y + obj.height &&
-          this.y + this.height > obj.y
+            heroHitBox.x < obj.x + obj.width &&
+            heroHitBox.x + heroHitBox.width > obj.x &&
+            heroHitBox.y < obj.y + obj.height &&
+            heroHitBox.y + heroHitBox.height > obj.y
         );
       }
 
+      //Hitbox Hero
+      getHeroHitBox(){
+        return{
+            x: this.x + 40,
+            y: this.y + 100,
+            width: this.width - 80,
+            height: this.height - 150 
+        }
+      }
 
-    collitionDetector(obj_1, obj_2) {
+      pufferfishArea(obj){
+
+      }
+    /* collitionDetector(obj_1, obj_2) {
         let dx = obj_2.x - obj_1.x;
         let dy = obj_2.y - obj_1.y;
         let r1 = Math.max(this.width, this.height) / 2;
-    }
+    } */
 
 }

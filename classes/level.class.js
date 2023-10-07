@@ -38,7 +38,7 @@ class Level {
     );
   }
 
-
+//neue Koordinaten für das Objekt, dass überlappt
   adjustCollision(obj) {
     obj.x = Math.floor(Math.random() * 2500) + 500;
     obj.y = Math.floor(Math.random() * 379) + 10; 
