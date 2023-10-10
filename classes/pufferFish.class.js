@@ -17,24 +17,51 @@ class PufferFish extends Opponents {
 
     moveTowardsHero(hero) {
         const moveInterval = setInterval(() => {
-            const heroX = hero.x + hero.width / 2;
-            const distance = heroX - this.x;
-
-            if (Math.abs(distance) <= 150) {
+            const heroX = hero.x + hero.width;
+            const heroY = hero.y + hero.height; // Berücksichtige die Höhe des Helden
+            const puffX = this.x + this.width;
+            const puffY = this.y + this.height; // Berücksichtige die Höhe des Pufferfish
+    
+            const distanceX = heroX - puffX;
+            const distanceY = heroY - puffY;
+    
+            const directionX = distanceX / Math.abs(distanceX);
+            const directionY = distanceY / Math.abs(distanceY);
+    
+            console.log(hero.x, puffX);
+    
+            // Set pufferFish on hold
+            if (Math.abs(distanceX) <= 2 || Math.abs(distanceX) >= 300 || Math.abs(distanceY) > 200) {
+                clearInterval(moveInterval);
+            } else {
+                this.x += directionX * this.speed;
+                this.y += directionY * this.speed; // Berücksichtige auch die y-Koordinate
+            }
+    
+            if (Math.abs(distanceX - this.width) <= 150 && Math.abs(distanceY) <= 200) {
                 this.attack = true;
                 this.speed = 0.1;
-            } else if (Math.abs(distance) >= 300) {
+            } else if (Math.abs(distanceX) >= 300 || Math.abs(distanceY) > 200) {
                 this.attack = false;
             }
-
+           /*  const heroX = hero.x + hero.width;
+            const puffX = this.x + this.width;
+            const distance = heroX - puffX;
             const direction = distance / Math.abs(distance);
-            if(Math.abs(distance)>2) this.x += direction * this.speed;
-
-             if (Math.abs(distance) <= 2 || Math.abs(distance) >= 300) {
-                //this.x += direction * speed;
-                 clearInterval(moveInterval);
-             }
-        }, 100/6);
+            console.log(hero.x, puffX);
+            // set pufferFish on hold
+            if (Math.abs(distance) <= 2 || Math.abs(distance) >= 300 || Math.abs(hero.y - this.y)> 200) {
+                clearInterval(moveInterval);
+            }else  this.x += direction * this.speed;
+            
+            if (Math.abs(distance- this.width) <= 150 && Math.abs(hero.y - this.y) <= 200) {
+                this.attack = true;
+                this.speed = 0.1;
+            } else if (Math.abs(distance) >= 300 || Math.abs(hero.y - this.y) > 200) this.attack = false; 
+ */
+            
+            
+        }, 100 / 6);
     }
 
     isHeroNear(hero) {
