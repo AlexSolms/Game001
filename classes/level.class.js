@@ -1,14 +1,19 @@
 class Level {
   activeOpponent;
   oceanBackground;
+  coins;
+  poison;
   levelEnd_x = 3300; //max How far hero can swim, used in class hero
   // collisionTracker = false;
 
-  constructor(activeOpponent, oceanBackground) {
+  constructor(activeOpponent, oceanBackground, coins, poison) {
   
     // debugger;
     this.activeOpponent = activeOpponent;
+    this.coins =coins;
+    this.poison = poison;
     this.oceanBackground = oceanBackground;
+    
     this.checkCollisionsUntilNoOverlap(activeOpponent);
   }
 

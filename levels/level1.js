@@ -11,11 +11,33 @@ BACKGROUNDLAYER = {
 const getRandomOpponent = () => new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)];
 
 const level1 = new Level(Array.from({ length: 16 }, () => getRandomOpponent()), [
-  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgWater, 1919 * i, 0, 400)),
-  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgLayer2, 1919 * i, -180, 600)),
-  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.ngLayer1, 1919 * i, -20, 500)),
-  ...Array.from({ length: 4 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgFloor, 1919 * i, 80, 400))
-]);
+    ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgWater, 1919 * i, 0, 400, 0.4)),
+    ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgLayer2, 1919 * i, -180, 600, 0.2)),
+    ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.ngLayer1, 1919 * i, -20, 500, 0.1)),
+    ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgFloor, 1919 * i, 80, 400, 0))
+],
+    [
+        new Coins(700, 0),
+        new Coins(740, 0),
+        new Coins(780, 0),
+        new Coins(820, 300),
+        new Coins(860, 300),
+        new Coins(900, 300),
+        new Coins(940, 300),
+        new Coins(980, 300),
+        new Coins(1020, 300)
+    ],
+    [
+        new PoisonBottle(700, 450),
+        new PoisonBottle(740, 450),
+        new PoisonBottle(780, 450),
+        new PoisonBottle(820, 450),
+        new PoisonBottle(860, 450),
+        new PoisonBottle(900, 450),
+        new PoisonBottle(940, 450),
+        new PoisonBottle(980, 450),
+        new PoisonBottle(1020, 450)
+    ]);
 
 
 

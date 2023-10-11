@@ -136,9 +136,7 @@ class MovableObject {
         }
       }
 
-      pufferfishArea(obj){
-
-      }
+    
     /* collitionDetector(obj_1, obj_2) {
         let dx = obj_2.x - obj_1.x;
         let dy = obj_2.y - obj_1.y;

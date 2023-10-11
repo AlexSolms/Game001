@@ -1,12 +1,16 @@
 class Background extends MovableObject {
-    x = 0;
-    y = 0;
-    height = 400;
     width = 1920;
-    constructor(i, x, y, height) {
+    height = 400;
+    constructor(i, x, y, height, speed) {
         super().loadImage(i);
         this.height = height;
-        this.y = y;
+        this.y = y;  
         this.x = x;
+        this.moveBackground(speed, x);
+    }
+
+    moveBackground(speed, x) {
+        setInterval(() => this.x = world?.hero.x * speed + x, 100/8);
     }
 }
+

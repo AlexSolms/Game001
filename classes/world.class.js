@@ -16,6 +16,7 @@ class World {
         this.setWorld();
         this.draw();
         this.checkCollisions();
+
         //console.log(this.keyboard);
     }
 
@@ -25,6 +26,7 @@ class World {
         //this.opponent.world3 = this;
     }
 
+
     checkCollisions() {
         setInterval(() => {
             this.level.activeOpponent.forEach((opponent) => {
@@ -32,20 +34,61 @@ class World {
                     //console.log('kollision with hero: ', opponent);
                 }
                 if (opponent instanceof PufferFish && opponent.isHeroNear(this.hero)) {
-                   //  console.log('Hero is near PufferFish:', opponent);
+                    //  console.log('Hero is near PufferFish:', opponent);
                     opponent.moveTowardsHero(this.hero);
                     // Do something when the hero is near the pufferfish
                 }
-                
+
             });
         }, 500)
     }
 
     draw() {
+
+       /*  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Leinwand löschen
+        this.ctx.translate(this.camera_x, 0); // Kamera bewegen
+    
+        // Hintergrund 1 (Boden) ohne Translation zeichnen
+        this.drawImg(this.level.oceanBackground[0]);
+    
+        // Hintergrund 2 mit langsamerer Bewegung zeichnen
+        this.ctx.save();
+        this.ctx.translate(this.camera_x * 0.3, 0); // Anpassen Sie den Multiplikator nach Bedarf
+        this.drawImg(this.level.oceanBackground[3 ]);
+        this.ctx.restore();
+    
+        // Hintergrund 3 mit noch langsamerer Bewegung zeichnen
+        this.ctx.save();
+        this.ctx.translate(this.camera_x * 0.2, 0); // Anpassen Sie den Multiplikator nach Bedarf
+        //this.drawImg(this.level.oceanBackground[3]);
+        this.ctx.restore();
+    
+        // Hintergrund 4 (nicht bewegen) zeichnen
+        //this.drawImg(this.level.oceanBackground[1]);
+    
+        // Andere Objekte zeichnen
+        this.drawMultObj(this.level.activeOpponent);
+        this.drawMultObj(this.level.coins);
+        this.drawMultObj(this.level.poison);
+        this.drawImg(this.hero);
+        this.drawImg(this.boss);
+    
+        this.ctx.translate(-this.camera_x, 0); // Zurücksetzen der Translation
+        let self = this;
+        requestAnimationFrame(function () {
+            self.draw();
+        });
+
+ */
+
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // clears canvas
         this.ctx.translate(this.camera_x, 0);
         this.drawMultObj(this.level.oceanBackground);
+
         this.drawMultObj(this.level.activeOpponent);
+        this.drawMultObj(this.level.coins);
+        this.drawMultObj(this.level.poison);
         this.drawImg(this.hero);
         this.drawImg(this.boss);
         this.ctx.translate(-this.camera_x, 0);
@@ -54,6 +97,14 @@ class World {
             self.draw();  // self is neccessary to bind the correct this (from World) to the draw
         });
     }
+
+
+
+
+
+
+
+
 
     drawMultObj(objectsToDraw) {
         objectsToDraw.forEach(o => {

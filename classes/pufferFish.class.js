@@ -28,7 +28,7 @@ class PufferFish extends Opponents {
             const directionX = distanceX / Math.abs(distanceX);
             const directionY = distanceY / Math.abs(distanceY);
     
-            console.log(hero.x, puffX);
+           // console.log(hero.x, puffX);
     
             // Set pufferFish on hold
             if (Math.abs(distanceX) <= 2 || Math.abs(distanceX) >= 300 || Math.abs(distanceY) > 200) {
@@ -43,23 +43,7 @@ class PufferFish extends Opponents {
                 this.speed = 0.1;
             } else if (Math.abs(distanceX) >= 300 || Math.abs(distanceY) > 200) {
                 this.attack = false;
-            }
-           /*  const heroX = hero.x + hero.width;
-            const puffX = this.x + this.width;
-            const distance = heroX - puffX;
-            const direction = distance / Math.abs(distance);
-            console.log(hero.x, puffX);
-            // set pufferFish on hold
-            if (Math.abs(distance) <= 2 || Math.abs(distance) >= 300 || Math.abs(hero.y - this.y)> 200) {
-                clearInterval(moveInterval);
-            }else  this.x += direction * this.speed;
-            
-            if (Math.abs(distance- this.width) <= 150 && Math.abs(hero.y - this.y) <= 200) {
-                this.attack = true;
-                this.speed = 0.1;
-            } else if (Math.abs(distance) >= 300 || Math.abs(hero.y - this.y) > 200) this.attack = false; 
- */
-            
+            }            
             
         }, 100 / 6);
     }
