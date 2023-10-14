@@ -8,7 +8,7 @@ class Hero extends MovableObject {
     imgIdleCount = 0
     heroAction = 'idle';
     world;
-    target;
+    //target;
     opponent;
 
     heroIdle = [
@@ -175,7 +175,7 @@ class Hero extends MovableObject {
             this.world.camera_x = -this.x;
         }, 100 / 6);
         setInterval(() => { this.normalSwimAndIdleAnimation() }, 140);
-        setInterval(() => { this.attackAnimation() }, 140);
+        setInterval(() => { this.attackAnimation(this.world.collidingOpponent) }, 140);
         setInterval(() => { this.hurtAnimation() }, 140);
         setInterval(() => { this.deadAnimation() }, 140);
     }
@@ -196,14 +196,16 @@ class Hero extends MovableObject {
         (this.imgIdleCount == 10 && this.action === 'longIdle') ? super.swimAnimation(this.heroLongIdle2) : '';
     }
 
-    attackAnimation() {
-        if (this.target === 'pufferFish') {
+    attackAnimation(target) {
+        if (target === 'puff' && this.world.keyboard.space) {
+            console.log('puff, ran da');
+            super.swimAnimation(this.heroAttack.bubbleTrapNormal); 
+        }
+        if (target === 'jelly' && this.world.keyboard.space) {
+            console.log('jelly, ran da');
             super.swimAnimation(this.heroAttack.bubbleTrapNormal);
         }
-        if (this.target === 'jellyFish') {
-            super.swimAnimation(this.heroAttack.bubbleTrapNormal);
-        }
-        if (this.target === 'wahl') {
+        if (target === 'wal' && this.world.keyboard.space) {
             super.swimAnimation(this.heroAttack.bubbleTrapWhale);
         }
     }
