@@ -10,7 +10,7 @@ BACKGROUNDLAYER = {
 
 const getRandomOpponent = () => new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)];
 
-const level1 = new Level(Array.from({ length: 16 }, () => getRandomOpponent()), [
+const level1 = new Level(Array.from({ length: 5 }, () => getRandomOpponent()), [
     ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgWater, 1919 * i, 0, 400, 0.4)),
     ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgLayer2, 1919 * i, -180, 600, 0.2)),
     ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.ngLayer1, 1919 * i, -20, 500, 0.1)),

@@ -31,18 +31,27 @@ class World {
     checkCollisions() {
         setInterval(() => {
             this.level.activeOpponent.forEach((opponent) => {
-                if (this.hero.isColliding(opponent)) {
-                    //console.log('kollision with hero: ', opponent);
+                let heroCloseToOpptonent = false;
+                const opponentName = Object.getPrototypeOf(opponent).constructor.name;
+                if (opponent.x - (this.hero.x + this.hero.width) < 100) {
+                    heroCloseToOpptonent = true;
+                } else {
+                    heroCloseToOpptonent = false;
                 }
-                if (opponent instanceof PufferFish && opponent.isHeroNear(this.hero)) {
-                    //  console.log('Hero is near PufferFish:', opponent);
-                    this.collidingOpponent = "puff";
+                /* if (this.hero.isColliding(opponent)) {
+                    //console.log('kollision with hero: ', opponent);
+                } */
+                if (opponent instanceof PufferFish && heroCloseToOpptonent) {
+                   // console.log('Hero is near PufferFish:', opponentName);
+                    this.collidingOpponent = opponentName;
                     opponent.moveTowardsHero(this.hero);
+                    heroCloseToOpptonent = false
                     // Do something when the hero is near the pufferfish
                 }
-                if (opponent instanceof JellyFish && this.hero.x +250 >= opponent.x) {
-                      console.log('Hero is near JellyFish:', opponent);
-                    this.collidingOpponent = "jelly";
+                if (opponent instanceof JellyFish && heroCloseToOpptonent) {
+                    //console.log('Hero is near JellyFish:', opponentName);
+                    this.collidingOpponent = opponentName;
+                    heroCloseToOpptonent = false
                     //opponent.moveTowardsHero(this.hero);
                     // Do something when the hero is near the pufferfish
                 }

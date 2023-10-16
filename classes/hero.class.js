@@ -7,6 +7,7 @@ class Hero extends MovableObject {
     idleTime = new Date().getTime();
     imgIdleCount = 0
     heroAction = 'idle';
+    attackImgCount = 0;
     world;
     //target;
     opponent;
@@ -167,7 +168,7 @@ class Hero extends MovableObject {
     */
     animateHero() {
         setInterval(() => {
-          //  console.log('hero: ', this.x);
+            //  console.log('hero: ', this.x);
             this.move(this.world.keyboard.right, 'x', 30);
             this.move(this.world.keyboard.left, 'x', -30);
             this.move(this.world.keyboard.up, 'y', -30);
@@ -197,16 +198,27 @@ class Hero extends MovableObject {
     }
 
     attackAnimation(target) {
-        if (target === 'puff' && this.world.keyboard.space) {
-            console.log('puff, ran da');
-            super.swimAnimation(this.heroAttack.bubbleTrapNormal); 
+        if (this.action === 'swim' && this.attackImgCount == 0) {
+ console.log('in hero class:', target);
+            if (target === 'puff' && this.world.keyboard.space && this.attackImgCount < 8) {
+                console.log('puff, ran da');
+                this.action === 'puffAtt';
+                super.swimAnimation(this.heroAttack.finSlap);
+                this.attackImgCount++;
+            }
+            if (target === 'jelly' && this.world.keyboard.space && this.attackImgCount < 8) {
+                console.log('jelly, ran da');
+                this.action === 'jellyAtt';
+                super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+                this.attackImgCount++;
+            }
+            if (target === 'wal' && this.world.keyboard.space) {
+                super.swimAnimation(this.heroAttack.bubbleTrapWhale);
+            }
         }
-        if (target === 'jelly' && this.world.keyboard.space) {
-            console.log('jelly, ran da');
-            super.swimAnimation(this.heroAttack.bubbleTrapNormal);
-        }
-        if (target === 'wal' && this.world.keyboard.space) {
-            super.swimAnimation(this.heroAttack.bubbleTrapWhale);
+        if (this.attackImgCount == 8) {
+            this.action === 'swim';
+            this.attackImgCount = 0;
         }
     }
 
@@ -238,7 +250,7 @@ class Hero extends MovableObject {
     move(direction, axis, multiplier) {
         if (this.world.keyboard.left) this.otherDirection = true;
         if (this.world.keyboard.right) this.otherDirection = false; //this if keeps the direction as long as right was not pushed 
-        const speedMult = this.speed * multiplier; 
+        const speedMult = this.speed * multiplier;
         const topBorder = this.y >= -this.world.hero.height / 2.2 || direction !== this.world.keyboard.up;
         const bottomBorder = this.y <= this.world.hero.height * 1.13 || direction !== this.world.keyboard.down;
         const rightBorder = this.x < this.world.level.levelEnd_x || direction !== this.world.keyboard.right;
