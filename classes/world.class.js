@@ -8,12 +8,13 @@ class World {
     keyboard;
     camera_x = 0;
     introDone = false;
-    colidingOpponent;
+    collidingOpponent={name:'',id:''};
+    closestOpponent = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.keyboard = keyboard;
+        this.keyboard = keyboard ;
         this.setWorld();
         this.draw();
         this.checkCollisions();
@@ -30,34 +31,92 @@ class World {
 
     checkCollisions() {
         setInterval(() => {
+
+            // variablen zur Positionsbestimmung des Helden und seiner Hitbox plus seiner Angriffsrange
+            const heroXposition = this.hero.x + this.hero.width/2;
+            const heroYposition = this.hero.y + this.hero.height/2;
+            const heroX_HitboxBorder = this.hero.width/2;
+            const heroY_HitboxBorder = this.hero.height/2;
+            const heroAttackRange = heroX_HitboxBorder * 1.5;
+            let distanceToHero = 0;
+
+            for (let i = 0; i < this.level.activeOpponent.length; i++) {
+                const opponentXposition = this.level.activeOpponent[i].x + this.level.activeOpponent[i].width/2;
+                const opponentYposition = this.level.activeOpponent[i].y + this.level.activeOpponent[i].height/2;
+                // gibt mir den Gegner aus, der am nächsten ist
+
+                 if (i === 0) {distanceToHero = Math.abs(heroXposition - opponentXposition);                    
+                } else if(Math.abs(heroXposition - opponentXposition) < distanceToHero){
+                    distanceToHero = Math.abs(heroXposition - opponentXposition);
+                } 
+                distanceToHero = Math.abs(heroXposition - opponentXposition); // Bestimmung der Position zu Sharkie
+                if (distanceToHero < heroAttackRange) {
+                 //   console.log(Object.getPrototypeOf(this.level.activeOpponent[i]).constructor.name);
+                 //   console.log(this.level.activeOpponent[i].x);
+                }
+                
+                
+            }
+            //console.log(heroXposition, heroYposition);
+
+
             this.level.activeOpponent.forEach((opponent) => {
-                let heroCloseToOpptonent = false;
+                
                 const opponentName = Object.getPrototypeOf(opponent).constructor.name;
-                if (opponent.x - (this.hero.x + this.hero.width) < 100) {
-                    heroCloseToOpptonent = true;
+                //console.log(this.level.activeOpponent); // alle opponenten
+                //Ich muss hier eine Logic beuen, die alle x Koordinaten der Opponenten ausließt
+                // sollte eine Koordinate mit der X Koordinate zu einem bestmmten Zeitpunkt machtchen
+                // kann der hero in den Angriff übergehen.
+
+                // 1. Funktion: feststellen welcher opponte gerade in der Attack range von Sharki ist
+                // 2. Ermitteln ob es sich um einen Kugelfisch oder eine Qualle handelt
+                // 3. auslösen des Angriffsmusters, wenn space gedrückt wurde und Sharki in Reichweite ist.
+                // 4. Todesanimatition Gegner
+                // 5. Drop in Bezug auf Gegner
+                // 6. Sharki sammelt drop automatisch, da der Drop auf ihn zufliegt.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                this.collidingOpponent.name = opponentName; 
+                this.collidingOpponent.id = opponent.id;
+                if (opponent.x - (this.hero.x + this.hero.width) < 50) {
+                    
                 } else {
-                    heroCloseToOpptonent = false;
+                    
                 }
                 /* if (this.hero.isColliding(opponent)) {
                     //console.log('kollision with hero: ', opponent);
                 } */
-                if (opponent instanceof PufferFish && heroCloseToOpptonent) {
-                   // console.log('Hero is near PufferFish:', opponentName);
-                    this.collidingOpponent = opponentName;
+                if (opponent instanceof PufferFish) {
+                    //console.log('Hero is near PufferFish:', this.collidingOpponent);
+                  
+                   
                     opponent.moveTowardsHero(this.hero);
-                    heroCloseToOpptonent = false
+                    
                     // Do something when the hero is near the pufferfish
                 }
-                if (opponent instanceof JellyFish && heroCloseToOpptonent) {
-                    //console.log('Hero is near JellyFish:', opponentName);
-                    this.collidingOpponent = opponentName;
-                    heroCloseToOpptonent = false
+                if (opponent instanceof JellyFish) {
+                    //console.log('Hero is near JellyFish:',this.collidingOpponent);
+                    
+                   
+                    
                     //opponent.moveTowardsHero(this.hero);
                     // Do something when the hero is near the pufferfish
                 }
 
             });
-        }, 500)
+        }, 140)
     }
 
     draw() {

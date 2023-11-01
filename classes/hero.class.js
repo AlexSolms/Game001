@@ -10,7 +10,7 @@ class Hero extends MovableObject {
     attackImgCount = 0;
     world;
     //target;
-    opponent;
+    opponent = { name: '', id: '' };
 
     heroIdle = [
         './images/1.Sharkie/1.IDLE/1.png',
@@ -198,28 +198,33 @@ class Hero extends MovableObject {
     }
 
     attackAnimation(target) {
-        if (this.action === 'swim' && this.attackImgCount == 0) {
- console.log('in hero class:', target);
-            if (target === 'puff' && this.world.keyboard.space && this.attackImgCount < 8) {
-                console.log('puff, ran da');
-                this.action === 'puffAtt';
-                super.swimAnimation(this.heroAttack.finSlap);
-                this.attackImgCount++;
-            }
-            if (target === 'jelly' && this.world.keyboard.space && this.attackImgCount < 8) {
-                console.log('jelly, ran da');
-                this.action === 'jellyAtt';
-                super.swimAnimation(this.heroAttack.bubbleTrapNormal);
-                this.attackImgCount++;
-            }
-            if (target === 'wal' && this.world.keyboard.space) {
-                super.swimAnimation(this.heroAttack.bubbleTrapWhale);
-            }
-        }
-        if (this.attackImgCount == 8) {
-            this.action === 'swim';
-            this.attackImgCount = 0;
-        }
+       // console.log('in hero class:', target);
+        if (this.opponent.id != target.id) {
+            this.opponent = target;
+           // console.log('in hero class:', this.opponent);
+        };
+            if (this.action === 'swim' && this.attackImgCount == 0) {
+   
+               if (target === 'puff' && this.world.keyboard.space && this.attackImgCount < 8) {
+                   console.log('puff, ran da');
+                   this.action === 'puffAtt';
+                   super.swimAnimation(this.heroAttack.finSlap);
+                   this.attackImgCount++;
+               }
+               if (target === 'jelly' && this.world.keyboard.space && this.attackImgCount < 8) {
+                   console.log('jelly, ran da');
+                   this.action === 'jellyAtt';
+                   super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+                   this.attackImgCount++;
+               }
+               if (target === 'wal' && this.world.keyboard.space) {
+                   super.swimAnimation(this.heroAttack.bubbleTrapWhale);
+               }
+           }
+           if (this.attackImgCount == 8) {
+               this.action === 'swim';
+               this.attackImgCount = 0;
+           } 
     }
 
     hurtAnimation() {

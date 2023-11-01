@@ -8,7 +8,13 @@ BACKGROUNDLAYER = {
 }
 
 
-const getRandomOpponent = () => new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)];
+//const getRandomOpponent = () => new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)];
+
+const getRandomOpponent = () => {
+    const randomOpponent = new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)];
+    randomOpponent.id = Math.floor(Math.random()* (1000 - 100 + 1)) + 100; // Annahme: Es gibt eine Funktion generateUniqueId, die eine eindeutige ID erstellt
+    return randomOpponent;
+  };
 
 const level1 = new Level(Array.from({ length: 5 }, () => getRandomOpponent()), [
     ...Array.from({ length: 3 }, (_, i) => new Background(this.BACKGROUNDLAYER.bgWater, 1919 * i, 0, 400, 0.4)),
@@ -40,7 +46,7 @@ const level1 = new Level(Array.from({ length: 5 }, () => getRandomOpponent()), [
     ]);
 
 
-
+    
 
 /* const level1 = new Level([
     new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)](),
