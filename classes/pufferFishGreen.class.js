@@ -38,7 +38,7 @@ class PufferFishGreen extends PufferFish{
          
         super.animatePufferfish(this.pufferFishImgSet);
         
-         console.log('PuffGreen ', this.y );
+         console.log('PuffGreen ', this.x, this.y, this.id );
      }
 
      

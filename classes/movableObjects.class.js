@@ -1,6 +1,7 @@
 class MovableObject {
-    x = 0;
-    y = 100;
+    x;
+    y;
+    id = Math.floor(Math.random()* (1000 - 100 + 1)) + 100;
     img;
     height;
     width;

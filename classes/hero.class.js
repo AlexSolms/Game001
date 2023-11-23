@@ -3,14 +3,17 @@ class Hero extends MovableObject {
     height = 250;
     y = 80;
     x = 0;
-    longIdle = false;
+    longIdle = false; // brauche ich das noch?
     idleTime = new Date().getTime();
-    imgIdleCount = 0
-    heroAction = 'idle';
+    imgIdleCount = 0;
+    action = 'idle';
+    //heroAction = 'idle';
     attackImgCount = 0;
+    newAttack = true; // Wird auf False gesetzt, sobald die runningAttack auf ture gesetzt wird
+    runningAttack = false; // Wird auf true gesetzt, sobald die Attacke ausgeführt wird, damit die 8 Bilder ablaufen können
     world;
     //target;
-    opponent = { name: '', id: '' };
+    opponent = { id: -1, distance: 0, name: '', objPos: 0 };
 
     heroIdle = [
         './images/1.Sharkie/1.IDLE/1.png',
@@ -175,8 +178,17 @@ class Hero extends MovableObject {
             this.move(this.world.keyboard.down, 'y', 30);
             this.world.camera_x = -this.x;
         }, 100 / 6);
+        //Der intervall für die Bewegung bleibt.
+        //die Intervalle für die einzelnen animationen werden zusammengefast.
+        // Die Animationen werden dann in abhängigkeit von folgenden Flags ausgeführt:
+        // this.world.keyboard.press === false UND nicht (Tod, Verletzt oder Angriff) >>> idle >>> longidel
+        // this.world.keyboard.press === true UND nicht (Tod, Verletzt oder Angriff) >>> swim
+        // this.world.keyboard.space === true UND Nicht (Tod, Verletzt) UND (NewAttack === True ODER runningAttack === True) UND attackImgCount <8 >>> attack,  << volle attackanimation ausführen
+        // this.world.keyboard.space === true UND Nicht (Tod, Verletzt) UND NewAttack === FALSE >>> idle
+        // this.world.keyboard.space === False UND runningAttack === False >>> NewAttack = True
+
         setInterval(() => { this.normalSwimAndIdleAnimation() }, 140);
-        setInterval(() => { this.attackAnimation(this.world.collidingOpponent) }, 140);
+        setInterval(() => { this.attackAnimation(this.world.closestOpponent_) }, 140);
         setInterval(() => { this.hurtAnimation() }, 140);
         setInterval(() => { this.deadAnimation() }, 140);
     }
@@ -188,43 +200,62 @@ class Hero extends MovableObject {
             super.swimAnimation(this.heroSwim, 1);
             this.idleTime = new Date().getTime();
         }
-        (!this.world.keyboard.press && this.imgIdleCount == 0) ? super.swimAnimation(this.heroIdle) : '';
+        if(!this.world.keyboard.press && this.imgIdleCount == 0) { 
+            super.swimAnimation(this.heroIdle);
+            this.action = 'idle';
+        }
         if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000 && this.imgIdleCount < 10) {
             super.swimAnimation(this.heroLongIdle1);
             this.imgIdleCount++;
             this.action = 'longIdle';
         }
-        (this.imgIdleCount == 10 && this.action === 'longIdle') ? super.swimAnimation(this.heroLongIdle2) : '';
+        if(this.imgIdleCount == 10 && this.action === 'longIdle') super.swimAnimation(this.heroLongIdle2);
     }
 
     attackAnimation(target) {
-       // console.log('in hero class:', target);
-        if (this.opponent.id != target.id) {
+        //debugger;
+        // console.log('in hero class:', target);
+        // hier muss ich nur die Position des Opponenten im Objekt level1.activeopponent übergeben
+        // Damit kann ich bestimmen, welcher Opponent es ist 
+        // darauf basierend wird die Attacke ausgeführt
+        if(this.world.level.activeOpponent[target.obj_pos] instanceof PufferFish) target.name ='puff';
+        if(this.world.level.activeOpponent[target.obj_pos] instanceof JellyFish) target.name ='jelly';
+        if (this.opponent.id != target.id) { // brauche ich das? Ich denke nicht!
             this.opponent = target;
-           // console.log('in hero class:', this.opponent);
+            // console.log('in hero class:', this.opponent);
+            
         };
-            if (this.action === 'swim' && this.attackImgCount == 0) {
-   
-               if (target === 'puff' && this.world.keyboard.space && this.attackImgCount < 8) {
-                   console.log('puff, ran da');
-                   this.action === 'puffAtt';
-                   super.swimAnimation(this.heroAttack.finSlap);
-                   this.attackImgCount++;
-               }
-               if (target === 'jelly' && this.world.keyboard.space && this.attackImgCount < 8) {
-                   console.log('jelly, ran da');
-                   this.action === 'jellyAtt';
-                   super.swimAnimation(this.heroAttack.bubbleTrapNormal);
-                   this.attackImgCount++;
-               }
-               if (target === 'wal' && this.world.keyboard.space) {
-                   super.swimAnimation(this.heroAttack.bubbleTrapWhale);
-               }
-           }
-           if (this.attackImgCount == 8) {
-               this.action === 'swim';
-               this.attackImgCount = 0;
-           } 
+        if (this.world.keyboard.space) {
+            //this.world.keyboard.space = false;
+            this.action = 'attack';
+            if (target.name === 'puff') super.swimAnimation(this.heroAttack.finSlap);
+            if (target.name === 'jelly') super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+            this.action = 'idle ';
+           /*  if (this.attackImgCount < 8) { // muss ich hier wirklich di Funktion 8 Mal aufrufen, ich denke nicht
+
+                if (target.name === 'puff') {
+                    console.log('puff, ran da');
+                    this.action === 'puffAtt';
+                    super.swimAnimation(this.heroAttack.finSlap);
+                    this.attackImgCount++;
+                }
+                if (target.name === 'jelly') {                          
+                    console.log('jelly, ran da');
+                    this.action === 'jellyAtt';
+                    super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+                    this.attackImgCount++;
+                }
+                if (target.name === 'wal') {
+                    super.swimAnimation(this.heroAttack.bubbleTrapWhale);
+                }
+            } */
+            if (this.attackImgCount === 8) {
+                debugger;
+                this.action = 'idle';
+                this.imgIdleCount = 0;
+                this.attackImgCount = 0;
+            }
+        }
     }
 
     hurtAnimation() {

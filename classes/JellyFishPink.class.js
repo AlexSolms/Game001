@@ -19,7 +19,7 @@ class JellyFishPink extends JellyFish {
             super().loadImage(this.jellyFishPic.jellyMovement[1]);
             super.loadImages(this.jellyFishPic.jellyMovement);
             super.animateJellyfish(this.jellyFishPic.jellyMovement);
-            console.log('JellyGreen ', this.y);
+            console.log('JellyPink ', this.x, this.y, this.id);
         }
 
     }

@@ -38,7 +38,7 @@ class PufferFishPink extends PufferFish{
         super.loadImages(this.pufferFishImgSet.puffFishBubbleMovement);
         
        super.animatePufferfish(this.pufferFishImgSet);
-        console.log('PuffPink ', this.y );
+        console.log('PuffPink ', this.x, this.y, this.id );
     }
 
 }

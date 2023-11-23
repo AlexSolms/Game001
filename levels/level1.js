@@ -12,7 +12,6 @@ BACKGROUNDLAYER = {
 
 const getRandomOpponent = () => {
     const randomOpponent = new this.OPPONENTS[Math.floor(Math.random() * this.OPPONENTS.length)];
-    randomOpponent.id = Math.floor(Math.random()* (1000 - 100 + 1)) + 100; // Annahme: Es gibt eine Funktion generateUniqueId, die eine eindeutige ID erstellt
     return randomOpponent;
   };
 
