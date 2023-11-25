@@ -219,10 +219,15 @@ class Hero extends MovableObject {
      * THis funktion checks and sets flags
      */
     chkFlags(){
+        console.log("chkFlags: " , this.world.level.activeOpponent[this.world.closestOpponent_.obj_pos]);
         // Die Logik hier muss die Flags wie folgt checken. 
         // Ist zum Beispiel die Hurtanimation am laufen?
         // oder ist vielleicht eine attacke am laufen
         // ist vielleicht ein Gegner in Angriffsreichweite usw.
+
+    }
+
+    idleFunction(){
 
     }
 
