@@ -18,7 +18,7 @@ class Hero extends MovableObject {
     deathcounter = 0;
     attackFlag = false; // True wenn SPACE gedrückt wurde
     attackImgCount = 0; // für die attack animation
-    newAttack = true; // Wird auf False gesetzt, sobald die runningAttack auf true gesetzt wird
+    newAttackFlag = true; // Wird auf False gesetzt, sobald die runningAttack auf true gesetzt wird
     runningAttack = false; // Wird auf true gesetzt, sobald die Attacke ausgeführt wird, damit die 8 Bilder ablaufen können
     swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
     longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
@@ -207,19 +207,41 @@ class Hero extends MovableObject {
      */
     chkAnimation() {
         this.chkFlags();
-        if (this.deathFlag) { this.showDead(); }// hier wird im Grunde nur ein Bild gezeigt und keine Animation 
-        else if (this.hurtFlag) { this.hurtFunction(); }
-        else if (this.attackFlag) { this.attackFunction(); }
-        else if (this.swimFlag) { this.swimFunction(); }
-        else if (this.longIdle) { this.longIdlefunction(); } // Ich muss noch eine Möglichkeit einbauen die Flags zu setzen!
-        else { this.idleFunction(); }
+        if (this.deathFlag)  this.showDead(); // hier wird im Grunde nur ein Bild gezeigt und keine Animation 
+        else if (this.hurtFlag)  this.hurtFunction(); 
+        else if (this.attackFlag)  this.attackFunction(); 
+        else if (this.swimFlag)  this.swimFunction(); 
+        else if (this.longIdle)  this.longIdlefunction();  // Ich muss noch eine Möglichkeit einbauen die Flags zu setzen!
+        else  this.idleFunction(); 
     }
     
     /**
      * THis funktion checks and sets flags
      */
     chkFlags(){
-        console.log("chkFlags: " , this.world.level.activeOpponent[this.world.closestOpponent_.obj_pos]);
+        this.resetAllFlags();
+        if (this.world.keyboard.press) {
+            this.swimFlag = true; 
+        }
+
+        // Ich denke um die Flags für die Attacke zu setzen brauche ich eine eigene Funktion
+        if (this.world.keyboard.space) {
+            if (this.newAttackFlag && !this.runningAttack) {
+                this.attackFlag = true; // brauche ich das am Ende eigentlich?
+                this.newAttackFlag = false; // wenn 
+                this.runningAttack = true;  // 
+                console.log('attacke start');
+            }
+        }
+        if (!this.world.keyboard.space && !this.runningAttack) {
+            this.newAttackFlag = true; // sollte die space taste losgelassen werden kann eine neue Attacke starten wenn nicht gerade eine im Gange ist
+            console.log('neue Attacke');
+        }
+        if (this.attackImgCount === 8){
+            this.runningAttack = false; // wenn die animation fertig ist ist auch die attacke fertig.
+            console.log('attacke beendet');
+        }
+       // console.log("chkFlags: " , this.world.level.activeOpponent[this.world.clOppPosInArr]);
         // Die Logik hier muss die Flags wie folgt checken. 
         // Ist zum Beispiel die Hurtanimation am laufen?
         // oder ist vielleicht eine attacke am laufen
@@ -227,10 +249,26 @@ class Hero extends MovableObject {
 
     }
 
+    /**
+     * this funktion resets all flags, needed to avoid repetitions
+     */
+    resetAllFlags(){
+        this.deathFlag = false;
+        this.hurtFlag = false;
+        this.attackFlag = false; // True wenn SPACE gedrückt wurde
+       // this.newAttackFlag = true; // Wird auf False gesetzt, sobald die runningAttack auf true gesetzt wird
+       // this.runningAttack = false; // Wird auf true gesetzt, sobald die Attacke ausgeführt wird, damit die 8 Bilder ablaufen können
+        this.swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
+        this.longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
+    }
+
     idleFunction(){
 
     }
 
+    attackFunction(){
+        console.log('attacke!!!! ');
+    }
 
 
 

@@ -10,6 +10,7 @@ class World {
     introDone = false;
     collidingOpponent = { name: '', id: '' };
     closestOpponent_ = { id: 0, distance: 20000, name: '', obj_pos: 0};//Object.getPrototypeOf(this.level.activeOpponent[0]).constructor.name;
+    clOppPosInArr = 0; // position of opponent in opponent array, wihi is the closets to hero
 
     //closestOpponent = 0;
 
@@ -74,6 +75,7 @@ class World {
                     closestOpponent.distance = distanz;
                     closestOpponent.name = Object.getPrototypeOf(this.level.activeOpponent[i]).constructor.name;
                     closestOpponent.obj_pos = i;
+                    this.clOppPosInArr = i;
                 }
             }
         }
