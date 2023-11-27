@@ -100,7 +100,7 @@ class World {
             //                                 Wenn zu weit weg. Angriff verpufft
             //                                 wenn zu nah, Sharki bekommt Schaden
             //                                 Wenn in ranche, Angrif wird erfolgreich ausgeführt
-            console.log('Blub: ',this.level.activeOpponent[this.closestOpponent_.obj_pos].x); 
+  //          console.log('Blub: ',this.level.activeOpponent[this.closestOpponent_.obj_pos].x); 
 
             //die for schleife zum ermittel des Opponenten der in positiver x Richting dem Hero am nächsten ist lagere ich in eine Funktion aus
             // Diese liefert mir den Opponenten auf Basis der x Koordinate vom Helden

@@ -194,12 +194,15 @@ class Hero extends MovableObject {
             this.move(this.world.keyboard.down, 'y', 30);
             this.world.camera_x = -this.x;
         }, 100 / 6);
-        setInterval(() => { this.normalSwimAndIdleAnimation() }, 140);
-        setInterval(() => { this.attackAnimation(this.world.closestOpponent_) }, 140); // muss ich hier eigentlich den closest opponent übergeben?
-        setInterval(() => { this.hurtAnimation() }, 140);
-        setInterval(() => { this.deadAnimation() }, 140);
+/*         setInterval(() => { this.normalSwimAndIdleAnimation();
+         this.attackAnimation(this.world.closestOpponent_); // muss ich hier eigentlich den closest opponent übergeben?
+         this.hurtAnimation();
+         this.deadAnimation(); 
+        }, 140); */
         // Neue zentraler Intervall von dem über die funktion chkAnimation die entsprechende Animation abgespielt wird.
-        setInterval(() => { this.chkAnimation() }, 140);
+        setInterval(() => { this.chkAnimation();
+        //console.log(this.idleTime); // for checks, ob idle time korreokt gesetzt
+        }, 140); 
     }
 
     /**
@@ -235,12 +238,13 @@ class Hero extends MovableObject {
         }
         if (!this.world.keyboard.space && !this.runningAttack) {
             this.newAttackFlag = true; // sollte die space taste losgelassen werden kann eine neue Attacke starten wenn nicht gerade eine im Gange ist
-            console.log('neue Attacke');
+            //console.log('neue Attacke');
         }
         if (this.attackImgCount === 8){
             this.runningAttack = false; // wenn die animation fertig ist ist auch die attacke fertig.
             console.log('attacke beendet');
         }
+
        // console.log("chkFlags: " , this.world.level.activeOpponent[this.world.clOppPosInArr]);
         // Die Logik hier muss die Flags wie folgt checken. 
         // Ist zum Beispiel die Hurtanimation am laufen?
@@ -256,18 +260,48 @@ class Hero extends MovableObject {
         this.deathFlag = false;
         this.hurtFlag = false;
         this.attackFlag = false; // True wenn SPACE gedrückt wurde
-       // this.newAttackFlag = true; // Wird auf False gesetzt, sobald die runningAttack auf true gesetzt wird
-       // this.runningAttack = false; // Wird auf true gesetzt, sobald die Attacke ausgeführt wird, damit die 8 Bilder ablaufen können
         this.swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
         this.longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
     }
 
     idleFunction(){
+        console.log('idle!!!! ');
+        super.swimAnimation(this.heroIdle);
 
     }
 
+    longIdlefunction(){
+        
+    }
+
+
+    swimFunction(){
+        console.log('swim!!!! ');
+        super.swimAnimation(this.heroSwim, 1);
+        this.resetIdletime();
+      }
+
     attackFunction(){
         console.log('attacke!!!! ');
+        let targetName = '';
+        if (this.world.keyboard.space) {
+       //this.action = 'attack';
+        if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof PufferFish) targetName = 'puff';
+        if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) targetName = 'jelly';
+        if (targetName === 'puff') super.swimAnimation(this.heroAttack.finSlap);
+        if (targetName === 'jelly') super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+        //this.action = 'idle ';  
+        } 
+        this.resetIdletime();
+    }
+
+    hurtFunction(){
+        this.resetIdletime();
+    }
+
+    resetIdletime(){
+        this.imgIdleCount = 0;
+        this.idleTime = new Date().getTime(); // damit longIdle gestartet werden kann 
     }
 
 
