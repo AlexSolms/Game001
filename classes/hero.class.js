@@ -4,14 +4,7 @@ class Hero extends MovableObject {
     y = 80;
     x = 0;
     savedX = this.x;
-
-    action = 'idle'; // wird in der neuen Logic nicht mehr benötigt
-    //heroAction = 'idle';
-
     world;
-    //target;
-    opponent = { id: -1, distance: 0, name: '', objPos: 0 };
-
     //Neustart: Definiere neue Varbiablen
     deathFlag = false;
     hurtFlag = false;
@@ -19,19 +12,12 @@ class Hero extends MovableObject {
     deathcounter = 0;
     attackFlag = false; // True wenn SPACE gedrückt wurde
     attackImgCount = 0; // für die attack animation
-
     newAttackFlag = true; // Wird auf False gesetzt, sobald die runningAttack auf true gesetzt wird
     runningAttack = false; // Wird auf true gesetzt, sobald die Attacke ausgeführt wird, damit die 8 Bilder ablaufen können
     swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
     longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
     idleTime = new Date().getTime();
     imgIdleCount = 0;
-
-
-
-
-
-
 
 
     heroIdle = [
@@ -196,16 +182,7 @@ class Hero extends MovableObject {
             this.move(this.world.keyboard.down, 'y', 30);
             this.world.camera_x = -this.x;
         }, 100 / 6);
-        /*         setInterval(() => { this.normalSwimAndIdleAnimation();
-                 this.attackAnimation(this.world.closestOpponent_); // muss ich hier eigentlich den closest opponent übergeben?
-                 this.hurtAnimation();
-                 this.deadAnimation(); 
-                }, 140); */
-        // Neue zentraler Intervall von dem über die funktion chkAnimation die entsprechende Animation abgespielt wird.
-        setInterval(() => {
-            this.chkAnimation();
-            //console.log(this.idleTime); // for checks, ob idle time korreokt gesetzt
-        }, 140);
+        setInterval(() => { this.chkAnimation(); }, 140);
     }
 
     /**
@@ -226,64 +203,16 @@ class Hero extends MovableObject {
      */
     chkFlags() {
         this.resetAllFlags();
-        if (this.world.keyboard.press) {
-            this.swimFlag = true;
-        }
-
-        if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000) {
-            this.longIdle = true;
-        }
-
-        //'''''''''''''''''''''ATTACK LOGIC'''''''''''''''''''''''''''''''
-        // Ich denke um die Flags für die Attacke zu setzen brauche ich eine eigene Funktion
-        if (this.world.keyboard.space) {
-            this.inAttackRange();
-            console.log('Opponent_X: ', this.world.level.activeOpponent[this.world.clOppPosInArr].x)
-            if (this.runningAttack && this.attackImgCount < 8) {
-                this.attackFlag = true;
-                this.attackImgCount++;
-            }
-
-        } else if (this.runningAttack && this.attackImgCount < 8) {
-            this.attackFlag = true;
-            this.attackImgCount++;
-        }
-
-
-
-
-
-        /*  if (this.world.keyboard.space ) {
-             this.runningAttack = true; 
-             //~~~~~~~~~~~~~~ chk ob bereits eine attackenroutine läuft, wenn nein start.
-             if (this.newAttackFlag) {
-                 this.newAttackFlag = false; // wenn 
-                   // 
-                 console.log('attacke start');
-             }
-         } */
-        /*  if (this.runningAttack && this.attackImgCount < 8) {
-             this.attackFlag = true;
-             this.attackImgCount++;
-         } */
-        if (!this.world.keyboard.space && !this.runningAttack) {
-            this.newAttackFlag = true; // sollte die space taste losgelassen werden kann eine neue Attacke starten wenn nicht gerade eine im Gange ist
-            //console.log('neue Attacke');
-        }
-        if (this.attackImgCount === 8 && !this.world.keyboard.space) {
-            this.runningAttack = false; // wenn die animation fertig ist ist auch die attacke fertig.
-            this.attackImgCount = 0;
-            this.attackFlag = false;
-            console.log('attacke beendet');
-        }
-        //'''''''''''''''''''''ATTACK LOGIC'''''''''''''''''''''''''''''''
-
+        if (this.deathcounter === 9) this.deathFlag = true;
+        this.chkHurt();
+        this.chkAttackFlags();
+        if (this.world.keyboard.press) this.swimFlag = true;
+        if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000) this.longIdle = true;
         // console.log("chkFlags: " , this.world.level.activeOpponent[this.world.clOppPosInArr]);
         // Die Logik hier muss die Flags wie folgt checken. 
         // Ist zum Beispiel die Hurtanimation am laufen?
         // oder ist vielleicht eine attacke am laufen
         // ist vielleicht ein Gegner in Angriffsreichweite usw.
-
     }
 
     /**
@@ -293,17 +222,18 @@ class Hero extends MovableObject {
         this.deathFlag = false;
         this.hurtFlag = false;
         this.attackFlag = false; // True wenn SPACE gedrückt wurde
-
         this.swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
         this.longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
-
     }
 
-    idleFunction() {
-        console.log('idle!!!! ');
-        super.swimAnimation(this.heroIdle);
-    }
+    /**
+     * this function starts the idle animation
+     */
+    idleFunction() { super.swimAnimation(this.heroIdle); }
 
+    /**
+     * this function starts the longIdle animation
+     */
     longIdlefunction() {
         if (this.imgIdleCount < 10) {
             super.swimAnimation(this.heroLongIdle1);
@@ -312,35 +242,78 @@ class Hero extends MovableObject {
         if (this.imgIdleCount == 10) super.swimAnimation(this.heroLongIdle2);
     }
 
-
+    /**
+     * this function starts swimanimation and calls function resetIdleTime() for reset
+     */
     swimFunction() {
-        console.log('swim!!!! ');
         super.swimAnimation(this.heroSwim, 1);
         this.resetIdletime();
     }
 
+    /**
+     * this function starts the attackanimation based on opponent
+     */
     attackFunction() {
-        console.log('attacke!!!! ');
         let targetName = '';
         if (this.runningAttack) {
-            //this.action = 'attack';
             if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof PufferFish) targetName = 'puff';
             if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) targetName = 'jelly';
             if (targetName === 'puff') super.swimAnimation(this.heroAttack.finSlap);
             if (targetName === 'jelly') super.swimAnimation(this.heroAttack.bubbleTrapNormal);
-            //this.action = 'idle ';  
         }
         this.resetIdletime();
     }
 
+    /**
+     * this function checks if hero has touched opponend
+     */
+    chkHurt() {
+
+    }
+
+    /**
+     * this function starts the hurt animation and calls reset for idletime
+     */
     hurtFunction() {
         this.resetIdletime();
     }
 
+    /**
+     * this function resets the idleTime
+     */
     resetIdletime() {
         this.imgIdleCount = 0;
         this.idleTime = new Date().getTime(); // damit longIdle gestartet werden kann 
     }
+
+    /**
+     * this function checks and calls setAttackFlag function and inAttackRange function and reset runningAttack
+     */
+    chkAttackFlags() {
+        if (this.world.keyboard.space) {
+            this.inAttackRange(); // schaltet runningAttack auf true wenn Gegner in Reichweite
+            if (this.runningAttack && this.attackImgCount < 8) {
+                this.setAttackFlag();
+            }
+        } else if (this.runningAttack && this.attackImgCount < 8) {
+            this.setAttackFlag();
+        } else if (this.attackImgCount === 8) { // ich muss hier nochmal drüber, die Animation wird nicht immer korrekt ausgeführt
+            this.runningAttack = false;
+            this.attackImgCount = 0;
+        }
+    }
+
+    /**
+     * this function sets the attackFlag
+     */
+    setAttackFlag() {
+        this.attackFlag = true;
+        this.attackImgCount++;
+    }
+
+    /**
+     * this function sets the runninAttack flag if condition is met
+     */
     inAttackRange() {
         let distance = 0;
         distance = this.world.level.activeOpponent[this.world.clOppPosInArr].x - this.x;
@@ -349,75 +322,6 @@ class Hero extends MovableObject {
         }
     }
 
-
-
-    // alter Code, bleibt unveränder!
-    /*     normalSwimAndIdleAnimation() {
-            if (this.world.keyboard.press) {
-                this.imgIdleCount = 0;
-                this.action = 'swim';
-                super.swimAnimation(this.heroSwim, 1);
-                this.idleTime = new Date().getTime(); // das muss bei Attacke und hurt und swim mit dabei sein, dass der longidletimer zurück gesetzt wird
-            }
-            if (!this.world.keyboard.press && this.imgIdleCount == 0) {
-                super.swimAnimation(this.heroIdle);
-                this.action = 'idle';
-            }
-            if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000 && this.imgIdleCount < 10) {
-                super.swimAnimation(this.heroLongIdle1);
-                this.imgIdleCount++;
-                this.action = 'longIdle';
-            }
-            if (this.imgIdleCount == 10 && this.action === 'longIdle') super.swimAnimation(this.heroLongIdle2);
-        } */
-
-    /*     attackAnimation(target) {
-            //debugger;
-            // console.log('in hero class:', target);
-            // hier muss ich nur die Position des Opponenten im Objekt level1.activeopponent übergeben
-            // Damit kann ich bestimmen, welcher Opponent es ist 
-            // darauf basierend wird die Attacke ausgeführt
-            if (this.world.level.activeOpponent[target.obj_pos] instanceof PufferFish) target.name = 'puff';
-            if (this.world.level.activeOpponent[target.obj_pos] instanceof JellyFish) target.name = 'jelly';
-            if (this.opponent.id != target.id) { // brauche ich das? Ich denke nicht!
-                this.opponent = target;
-                // console.log('in hero class:', this.opponent);
-    
-            };
-            if (this.world.keyboard.space) {
-                //this.world.keyboard.space = false;
-                this.action = 'attack';
-                if (target.name === 'puff') super.swimAnimation(this.heroAttack.finSlap);
-                if (target.name === 'jelly') super.swimAnimation(this.heroAttack.bubbleTrapNormal);
-                this.action = 'idle ';
-                
-                if (this.attackImgCount === 8) {
-                    debugger;
-                    this.action = 'idle';
-                    this.imgIdleCount = 0;
-                    this.attackImgCount++;
-                }
-            }
-        }
-     */
-    /*   hurtAnimation() {
-          if (this.opponent === 'pufferFish' || this.opponent === 'whal') {
-              super.swimAnimation(this.heroHurt.poisened);
-          }
-          if (this.opponent === 'jellyFish') {
-              super.swimAnimation(this.heroHurt.shocked);
-          }
-      }
-  
-      deadAnimation() {
-          if (this.opponent === 'pufferFish' || this.opponent === 'whal') {
-              super.swimAnimation(this.heroDead.poisened);
-          }
-          if (this.opponent === 'jellyFish') {
-              super.swimAnimation(this.heroDead.shocked);
-          }
-      }
-   */
     /**
      * This funktion moves the hero depending on the given parameter
      * 

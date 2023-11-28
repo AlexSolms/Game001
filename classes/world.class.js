@@ -89,9 +89,9 @@ class World {
             //ermittle den nächtgelegenen Gegner und gib id, distanz und Art des Gegners aus
             let closestOpponent = this.getClosestOpponent();
             if (closestOpponent.id != this.closestOpponent_.id) {
-               console.log('initial opponent: ', closestOpponent);
+              // console.log('initial opponent: ', closestOpponent);
                 this.closestOpponent_ = this.getClosestOpponent();
-                console.log(this.closestOpponent_);
+                //console.log(this.closestOpponent_);
             }
             // Ich habe jetzt die Entfernung zum Gegner und um welchen Gegner es sich handelt.
             // Jetzt soll folgendes passiere:
