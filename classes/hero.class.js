@@ -208,11 +208,6 @@ class Hero extends MovableObject {
         this.chkAttackFlags();
         if (this.world.keyboard.press) this.swimFlag = true;
         if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000) this.longIdle = true;
-        // console.log("chkFlags: " , this.world.level.activeOpponent[this.world.clOppPosInArr]);
-        // Die Logik hier muss die Flags wie folgt checken. 
-        // Ist zum Beispiel die Hurtanimation am laufen?
-        // oder ist vielleicht eine attacke am laufen
-        // ist vielleicht ein Gegner in Angriffsreichweite usw.
     }
 
     /**
