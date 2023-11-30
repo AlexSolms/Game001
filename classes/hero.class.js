@@ -262,14 +262,14 @@ class Hero extends MovableObject {
     /**
      * this function checks if hero has touched opponend
      */
-    chkHurt() {
-
-    }
+    chkHurt() {if(super.isColliding(level1.activeOpponent[this.world.clOppPosInArr])) this.hurtFlag = true;}
 
     /**
      * this function starts the hurt animation and calls reset for idletime
      */
     hurtFunction() {
+        if(this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) {super.swimAnimation(this.heroHurt.shocked); 
+        } else super.swimAnimation(this.heroHurt.poisened);
         this.resetIdletime();
     }
 

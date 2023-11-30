@@ -9,7 +9,7 @@ class World {
     introDone = false;
     collidingOpponent = { name: '', id: '' };
     clOppPosInArr = 0; // position of opponent in opponent array, wihi is the closets to hero
-    
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -44,26 +44,17 @@ class World {
     /**
      * this function starts the movement of a pufferfish if Sharky is close to it
      */
-    defenseOfPufferfish(){
+    defenseOfPufferfish() {
         setInterval(() => {
-            this.level.activeOpponent.forEach((opponent) => {
-                const opponentName = Object.getPrototypeOf(opponent).constructor.name;
-                this.collidingOpponent.name = opponentName;
-                this.collidingOpponent.id = opponent.id;              
-                if (opponent instanceof PufferFish) {
-                    //console.log('Hero is near PufferFish:', this.collidingOpponent);
-                    opponent.moveTowardsHero(this.hero);
-                }
-            });
+            this.level.activeOpponent.forEach((opponent) => {if (opponent instanceof PufferFish) opponent.moveTowardsHero(this.hero);});
         }, 140)
     }
 
 
     checkCollisions() {
         setInterval(() => {
-            
             this.getClosestOpponent(); //gibt die Position im OpponentenArray des zum Helden nächsten Opponenten wieder
-
+            
         }, 140)
     }
 

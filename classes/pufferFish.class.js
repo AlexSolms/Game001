@@ -10,24 +10,24 @@ class PufferFish extends Opponents {
         setInterval(() => {
             const movement = this.attack ? this.imgSet.puffFishBubbleMovement : this.imgSet.puffFishNormalMovement;
             super.swimAnimation(movement);
+            
         }, 140);
     }
 
     moveTowardsHero(hero) {
         const moveInterval = setInterval(() => {
-            const heroX = hero.x + hero.width / 1.5; // verscheibe das x vor sharkie, es ist ansonsten an seinem Ende
-            const heroY = hero.y + hero.height / 2; // Berücksichtige die Höhe des Helden, Verschiebung des y in die Mitte von Sharki
-            const puffX = this.x - this.width / 2;
-            const puffY = this.y - this.height / 2; // Berücksichtige die Höhe des Pufferfish
-
-            const distanceX = heroX - puffX;
-            let distanceY = heroY - puffY;
+        const heroX = hero.x + hero.width / 1.5; // verscheibe das x vor sharkie, es ist ansonsten an seinem Ende
+        const heroY = hero.y + hero.height / 2; // Berücksichtige die Höhe des Helden, Verschiebung des y in die Mitte von Sharki
+        const puffX = this.x - this.width / 2;
+        const puffY = this.y - this.height / 2; // Berücksichtige die Höhe des Pufferfish
+        const distanceX = heroX - puffX;
+        let distanceY = heroY - puffY;
        
             // muss das ändern, der Pufferfish soll nur auf hero zuschwimmen, wenn er vo ihm ist, ansonsten soll er bleiben wo er ist.
 
-                const directionX = Math.abs(distanceX) / distanceX;
-                if (distanceY === 0) distanceY = 0.25;
-                const directionY = Math.abs(distanceY) / distanceY;
+        const directionX = Math.abs(distanceX) / distanceX;
+        if (distanceY === 0) distanceY = 0.25;
+        const directionY = Math.abs(distanceY) / distanceY;
 
                 
                 // sorgt dafür, dass ich unter dem Pufferfish durchschwimmen kann wenn die Distanz größer 200 ist
