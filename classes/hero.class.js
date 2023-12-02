@@ -9,6 +9,7 @@ class Hero extends MovableObject {
     deathFlag = false;
     hurtFlag = false;
     hurtImgCount = 0; // für die hurt animation
+    runningHurt = false; // Wird auf true gesetzt, sobald hurt ausgeführt wird, damit die Bildsequenz ablaufen kann
     deathcounter = 0;
     attackFlag = false; // True wenn SPACE gedrückt wurde
     attackImgCount = 0; // für die attack animation
@@ -203,7 +204,6 @@ class Hero extends MovableObject {
      */
     chkFlags() {
         this.resetAllFlags();
-        if (this.deathcounter === 9) this.deathFlag = true;
         this.chkHurt();
         this.chkAttackFlags();
         if (this.world.keyboard.press) this.swimFlag = true;
@@ -214,7 +214,7 @@ class Hero extends MovableObject {
      * this funktion resets all flags, needed to avoid repetitions
      */
     resetAllFlags() {
-        this.deathFlag = false;
+        //this.deathFlag = false;
         this.hurtFlag = false;
         this.attackFlag = false; // True wenn SPACE gedrückt wurde
         this.swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
@@ -262,15 +262,40 @@ class Hero extends MovableObject {
     /**
      * this function checks if hero has touched opponend
      */
-    chkHurt() {if(super.isColliding(level1.activeOpponent[this.world.clOppPosInArr])) this.hurtFlag = true;}
+    chkHurt(imgset) { // das Hurtflag darf nur dann auf true sein, wenn die animation noch läuft.
+        if (this.hurtImgCount < imgset.length) {
+            if (super.isColliding(level1.activeOpponent[this.world.clOppPosInArr])) {
+                if (this.runningHurt && this.hurtImgCount < this.heroHurt.poisened.length) {
+                    this.setHurtFlag();
+                }
+
+            }
+        }
+    }
 
     /**
      * this function starts the hurt animation and calls reset for idletime
      */
     hurtFunction() {
-        if(this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) {super.swimAnimation(this.heroHurt.shocked); 
+        if (this.deathcounter === 8) {
+            this.deathFlag = true;
+            if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) {
+                super.swimAnimation(this.heroDead.shocked);
+            } else super.swimAnimation(this.heroDead.poisened);
+        } else if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) {
+            super.swimAnimation(this.heroHurt.shocked);
         } else super.swimAnimation(this.heroHurt.poisened);
+        //this.deathcounter++;
         this.resetIdletime();
+    }
+
+    setHurtFlag() { //Ich muss mal schauen ob ich diese Funktion nicht mit der setAttackFlag Funktion zusammenfassen kann über Parameterübergabe
+        this.hurtFlag = true;
+        this.hurtImgCount++;
+    }
+
+    showDead() {
+        super.loadImage('./images/1.Sharkie/6.dead/1.Poisoned/12.png');
     }
 
     /**
