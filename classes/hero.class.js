@@ -19,6 +19,9 @@ class Hero extends MovableObject {
     longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
     idleTime = new Date().getTime();
     imgIdleCount = 0;
+    targetName = '';
+    boss = false;
+    imgSetHurt = '';
 
 
     heroIdle = [
@@ -190,6 +193,8 @@ class Hero extends MovableObject {
      * This funktion checks all flags with a priority and calls the belonging function
      */
     chkAnimation() {
+        this.chkTarget();
+        this.setHurtImgSet();
         this.chkFlags();
         if (this.deathFlag) this.showDead(); // hier wird im Grunde nur ein Bild gezeigt und keine Animation 
         else if (this.hurtFlag) this.hurtFunction();
@@ -246,15 +251,27 @@ class Hero extends MovableObject {
     }
 
     /**
+     * this function checks which the kind of the closest opponent to hero
+     */
+    chkTarget() {
+        this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof PufferFish ? this.targetName = 'puff' : this.targetName = 'jelly';
+        if (this.boss) this.targetName = 'boss';
+    }
+
+    setHurtImgSet(){
+        if (this.targetName = 'puff') this.imgSetHurt = this.heroHurt.poisened;
+        if (this.targetName = 'jelly') this.imgSetHurt = this.heroHurt.shocked;
+        if (this.targetName = 'boss') this.imgSetHurt = this.heroHurt.poisened;
+    }
+
+    /**
      * this function starts the attackanimation based on opponent
      */
     attackFunction() {
-        let targetName = '';
         if (this.runningAttack) {
-            if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof PufferFish) targetName = 'puff';
-            if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) targetName = 'jelly';
-            if (targetName === 'puff') super.swimAnimation(this.heroAttack.finSlap);
-            if (targetName === 'jelly') super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+            if (this.targetName === 'puff') super.swimAnimation(this.heroAttack.finSlap);
+            if (this.targetName === 'jelly') super.swimAnimation(this.heroAttack.bubbleTrapNormal);
+            if (this.targetName === 'boss') super.swimAnimation(this.heroAttack.bubbleTrapWhale);
         }
         this.resetIdletime();
     }
@@ -262,13 +279,12 @@ class Hero extends MovableObject {
     /**
      * this function checks if hero has touched opponend
      */
-    chkHurt(imgset) { // das Hurtflag darf nur dann auf true sein, wenn die animation noch läuft.
-        if (this.hurtImgCount < imgset.length) {
+    chkHurt() { // das Hurtflag darf nur dann auf true sein, wenn die animation noch läuft.
+        if (this.hurtImgCount < this.imgSetHurt.length) {
             if (super.isColliding(level1.activeOpponent[this.world.clOppPosInArr])) {
-                if (this.runningHurt && this.hurtImgCount < this.heroHurt.poisened.length) {
+                if (this.runningHurt || this.hurtImgCount < this.imgSetHurt.length) {
                     this.setHurtFlag();
                 }
-
             }
         }
     }
@@ -285,7 +301,6 @@ class Hero extends MovableObject {
         } else if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) {
             super.swimAnimation(this.heroHurt.shocked);
         } else super.swimAnimation(this.heroHurt.poisened);
-        //this.deathcounter++;
         this.resetIdletime();
     }
 
