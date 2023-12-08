@@ -9,12 +9,12 @@ class Hero extends MovableObject {
     deathFlag = false;
     hurtFlag = false;
     hurtImgCount = 0; // für die hurt animation
-    runningHurt = false; // Wird auf true gesetzt, sobald hurt ausgeführt wird, damit die Bildsequenz ablaufen kann
     deathcounter = 0;
     attackFlag = false; // True wenn SPACE gedrückt wurde
     attackImgCount = 0; // für die attack animation
     newAttackFlag = true; // Wird auf False gesetzt, sobald die runningAttack auf true gesetzt wird
     runningAttack = false; // Wird auf true gesetzt, sobald die Attacke ausgeführt wird, damit die 8 Bilder ablaufen können
+    attackRange = this.width/2;
     swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
     longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
     idleTime = new Date().getTime();
@@ -179,23 +179,27 @@ class Hero extends MovableObject {
     * This function changes the images (source image Cache) of the object with an intervall
     */
     animateHero() {
-        setInterval(() => { // Die move Funktion lasse ich erst einmal unangetastet
+         setInterval(() => { // Die move Funktion lasse ich erst einmal unangetastet
+            if(this.swimFlag){
             this.move(this.world.keyboard.right, 'x', 30);
             this.move(this.world.keyboard.left, 'x', -30);
             this.move(this.world.keyboard.up, 'y', -30);
             this.move(this.world.keyboard.down, 'y', 30);
             this.world.camera_x = -this.x;
-        }, 100 / 6);
-        setInterval(() => { this.chkAnimation(); }, 140);
+            }
+        }, 100 / 6); 
+        setInterval(() => { 
+            this.chkAnimation();  
+        }, 140);
     }
 
     /**
      * This funktion checks all flags with a priority and calls the belonging function
      */
     chkAnimation() {
-        this.chkTarget();
-        this.setHurtImgSet();
-        this.chkFlags();
+        this.chkTarget(); // was ist das naächste Ziel?
+        this.setHurtImgSet(); // setzte Hurt image set basierend auf das nächste Target
+        this.chkFlags(); // checke und setze die Flags
         if (this.deathFlag) this.showDead(); // hier wird im Grunde nur ein Bild gezeigt und keine Animation 
         else if (this.hurtFlag) this.hurtFunction();
         else if (this.attackFlag) this.attackFunction();
@@ -205,13 +209,32 @@ class Hero extends MovableObject {
     }
 
     /**
+     * this function checks which the kind of the closest opponent to hero
+     * kann in movable Object
+     */
+    chkTarget() {
+        if (this.boss) this.targetName = 'boss'; // ich muss noch definieren wann this.boss auf true ist
+        else this.targetName = this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof PufferFish ? 'puff' : 'jelly';
+    }
+
+     /**
+     * this function sets the image set based on the opponent
+     */
+     setHurtImgSet() {
+        if (this.targetName === 'puff') this.imgSetHurt = this.heroHurt.poisened;
+        if (this.targetName === 'jelly') this.imgSetHurt = this.heroHurt.shocked;
+        if (this.targetName === 'boss') this.imgSetHurt = this.heroHurt.poisened;
+    }
+
+    /**
      * THis funktion checks and sets flags
      */
     chkFlags() {
         this.resetAllFlags();
+        this.setCollisionFlag();
         this.chkHurt();
         this.chkAttackFlags();
-        if (this.world.keyboard.press) this.swimFlag = true;
+        if (this.world.keyboard.press && !this.hurtFlag && !this.attackFlag && !this.deathFlag) this.swimFlag = true;
         if (!this.world.keyboard.press && new Date().getTime() - this.idleTime > 5000) this.longIdle = true;
     }
 
@@ -249,21 +272,7 @@ class Hero extends MovableObject {
         super.swimAnimation(this.heroSwim, 1);
         this.resetIdletime();
     }
-
-    /**
-     * this function checks which the kind of the closest opponent to hero
-     */
-    chkTarget() {
-        this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof PufferFish ? this.targetName = 'puff' : this.targetName = 'jelly';
-        if (this.boss) this.targetName = 'boss';
-    }
-
-    setHurtImgSet(){
-        if (this.targetName = 'puff') this.imgSetHurt = this.heroHurt.poisened;
-        if (this.targetName = 'jelly') this.imgSetHurt = this.heroHurt.shocked;
-        if (this.targetName = 'boss') this.imgSetHurt = this.heroHurt.poisened;
-    }
-
+   
     /**
      * this function starts the attackanimation based on opponent
      */
@@ -276,16 +285,41 @@ class Hero extends MovableObject {
         this.resetIdletime();
     }
 
+     /**
+     * this function sets the collision flag
+     */
+     setCollisionFlag() { this.collisionFlag = super.isColliding(level1.activeOpponent[this.world.clOppPosInArr]); }
+
     /**
      * this function checks if hero has touched opponend
      */
     chkHurt() { // das Hurtflag darf nur dann auf true sein, wenn die animation noch läuft.
-        if (this.hurtImgCount < this.imgSetHurt.length) {
-            if (super.isColliding(level1.activeOpponent[this.world.clOppPosInArr])) {
-                if (this.runningHurt || this.hurtImgCount < this.imgSetHurt.length) {
-                    this.setHurtFlag();
+           if (this.collisionFlag || this.hurtImgCount > 0) {
+                this.setHurtFlag();
+                if (this.hurtImgCount >= this.imgSetHurt.length) {
+                    this.hurtFlag = false;
+                    this.hurtImgCount = 0;
                 }
             }
+    }
+
+    /**
+     * This function sets the hurt flag, increments the image count and moves hero out of range of opponent
+     */
+    setHurtFlag() { //Ich muss mal schauen ob ich diese Funktion nicht mit der setAttackFlag Funktion zusammenfassen kann über Parameterübergabe
+        this.hurtFlag = true;
+        this.moveHeroBackFromOpponent();
+        this.hurtImgCount++; 
+    }
+
+    /**
+     * this function moves hero out of range of opponent
+     */
+    moveHeroBackFromOpponent(){
+        let opponent = level1.activeOpponent[this.world.clOppPosInArr];    
+        if(this.hurtImgCount === 0) {
+        this.x = opponent.x - opponent.width - this.attackRange - this.width/2;
+        this.world.camera_x = -this.x;
         }
     }
 
@@ -295,18 +329,12 @@ class Hero extends MovableObject {
     hurtFunction() {
         if (this.deathcounter === 8) {
             this.deathFlag = true;
-            if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) {
-                super.swimAnimation(this.heroDead.shocked);
-            } else super.swimAnimation(this.heroDead.poisened);
-        } else if (this.world.level.activeOpponent[this.world.clOppPosInArr] instanceof JellyFish) {
+            if (this.targetName === 'jelly') super.swimAnimation(this.heroDead.shocked);
+            else super.swimAnimation(this.heroDead.poisened);
+        } else if (this.targetName === 'jelly') {
             super.swimAnimation(this.heroHurt.shocked);
         } else super.swimAnimation(this.heroHurt.poisened);
         this.resetIdletime();
-    }
-
-    setHurtFlag() { //Ich muss mal schauen ob ich diese Funktion nicht mit der setAttackFlag Funktion zusammenfassen kann über Parameterübergabe
-        this.hurtFlag = true;
-        this.hurtImgCount++;
     }
 
     showDead() {
@@ -325,7 +353,7 @@ class Hero extends MovableObject {
      * this function checks and calls setAttackFlag function and inAttackRange function and reset runningAttack
      */
     chkAttackFlags() {
-        if (this.world.keyboard.space) {
+        if (this.world.keyboard.space) { // bei der serten Bedingung könnete ich auch abfragen ob der IMG count  >0 ist
             this.inAttackRange(); // schaltet runningAttack auf true wenn Gegner in Reichweite
             if (this.runningAttack && this.attackImgCount < 8) {
                 this.setAttackFlag();
@@ -350,9 +378,9 @@ class Hero extends MovableObject {
      * this function sets the runninAttack flag if condition is met
      */
     inAttackRange() {
-        let distance = 0;
-        distance = this.world.level.activeOpponent[this.world.clOppPosInArr].x - this.x;
-        if (distance <= this.width && distance >= 80) { // hier muss ich die Distanz anpassen, dass der Abstand stimmt 
+        //let distance = 0;
+        let distance = this.world.level.activeOpponent[this.world.clOppPosInArr].x - this.x;
+        if (distance <= this.width && distance >= this.attackRange) { // hier muss ich die Distanz anpassen, dass der Abstand stimmt 
             this.runningAttack = true;
         }
     }
