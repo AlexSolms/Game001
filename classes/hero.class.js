@@ -14,7 +14,7 @@ class Hero extends MovableObject {
     attackImgCount = 0; // für die attack animation
     newAttackFlag = true; // Wird auf False gesetzt, sobald die runningAttack auf true gesetzt wird
     runningAttack = false; // Wird auf true gesetzt, sobald die Attacke ausgeführt wird, damit die 8 Bilder ablaufen können
-    attackRange = this.width/2;
+    attackRange = this.width/1.5;
     swimFlag = false; // True wenn eine der Richtungstasten gedrückt wird
     longIdle = false; // True wenn aktuelle Zeit - idleTime >= 5000 ist
     idleTime = new Date().getTime();
@@ -294,7 +294,7 @@ class Hero extends MovableObject {
      * this function checks if hero has touched opponend
      */
     chkHurt() { // das Hurtflag darf nur dann auf true sein, wenn die animation noch läuft.
-           if (this.collisionFlag || this.hurtImgCount > 0) {
+           if ((this.collisionFlag || this.hurtImgCount > 0) && !this.runningAttack) {
                 this.setHurtFlag();
                 if (this.hurtImgCount >= this.imgSetHurt.length) {
                     this.hurtFlag = false;
@@ -318,7 +318,7 @@ class Hero extends MovableObject {
     moveHeroBackFromOpponent(){
         let opponent = level1.activeOpponent[this.world.clOppPosInArr];    
         if(this.hurtImgCount === 0) {
-        this.x = opponent.x - opponent.width - this.attackRange - this.width/2;
+        this.x = opponent.x - opponent.width - this.attackRange;
         this.world.camera_x = -this.x;
         }
     }
@@ -372,6 +372,11 @@ class Hero extends MovableObject {
     setAttackFlag() {
         this.attackFlag = true;
         this.attackImgCount++;
+        if(this.targetName === 'puff'){
+            if (this.attackImgCount === 0) this.savedX = this.x;
+            this.x = this.x + this.attackRange/8;
+        }
+        if(this.attackImgCount > 8) this.x = this.savedX;
     }
 
     /**
